@@ -7,6 +7,7 @@ plugins {
 android {
     namespace = "com.quickbite.quickbite_cafe"
     compileSdk = flutter.compileSdkVersion
+    ndkVersion = flutter.ndkVersion
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
