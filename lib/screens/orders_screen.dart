@@ -43,12 +43,12 @@ class _OrdersScreenState extends State<OrdersScreen> {
                   return const _OrdersLoadingState();
                 }
 
-                if (orderProvider.errorMessage != null &&
+                if (orderProvider.ordersErrorMessage != null &&
                     orderProvider.orders.isEmpty) {
                   return StateMessage(
                     icon: Icons.receipt_long_outlined,
                     title: 'Orders are unavailable',
-                    message: orderProvider.errorMessage!,
+                    message: orderProvider.ordersErrorMessage!,
                     actionLabel: 'Try again',
                     onAction: orderProvider.loadOrders,
                   );
@@ -69,7 +69,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                 return _OrdersList(
                   orders: orders,
                   isRefreshing: orderProvider.isLoading,
-                  errorMessage: orderProvider.errorMessage,
+                  errorMessage: orderProvider.ordersErrorMessage,
                   onRefresh: orderProvider.loadOrders,
                 );
               },

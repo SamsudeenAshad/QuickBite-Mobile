@@ -129,7 +129,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       }
       setState(() {
         _submissionError =
-            orderProvider.errorMessage ??
+            orderProvider.placementErrorMessage ??
             'We could not place your order. Check your details and try again.';
       });
     } finally {

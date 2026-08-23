@@ -48,7 +48,7 @@ class ProfileScreen extends StatelessWidget {
                               return _LoyaltyCard(
                                 points: orderProvider.loyaltyPoints,
                                 isLoading: orderProvider.isLoading,
-                                errorMessage: orderProvider.errorMessage,
+                                errorMessage: orderProvider.loyaltyErrorMessage,
                                 onRetry: orderProvider.loadOrders,
                               );
                             },

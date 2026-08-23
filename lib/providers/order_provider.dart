@@ -13,14 +13,23 @@ class OrderProvider extends ChangeNotifier {
   bool _isLoading = false;
   bool _isPlacingOrder = false;
   int _loyaltyPoints = 0;
-  String? _errorMessage;
+  String? _ordersErrorMessage;
+  String? _loyaltyErrorMessage;
+  String? _placementErrorMessage;
   OrderModel? _lastPlacedOrder;
 
   List<OrderModel> get orders => List<OrderModel>.unmodifiable(_orders);
   bool get isLoading => _isLoading;
   bool get isPlacingOrder => _isPlacingOrder;
   int get loyaltyPoints => _loyaltyPoints;
-  String? get errorMessage => _errorMessage;
+  String? get ordersErrorMessage => _ordersErrorMessage;
+  String? get loyaltyErrorMessage => _loyaltyErrorMessage;
+  String? get placementErrorMessage => _placementErrorMessage;
+
+  /// Kept as a convenient summary for callers that do not need to distinguish
+  /// between order, loyalty, and checkout errors.
+  String? get errorMessage =>
+      _placementErrorMessage ?? _ordersErrorMessage ?? _loyaltyErrorMessage;
   OrderModel? get lastPlacedOrder => _lastPlacedOrder;
 
   Future<void> loadOrders() async {
@@ -29,17 +38,25 @@ class OrderProvider extends ChangeNotifier {
     }
 
     _isLoading = true;
-    _errorMessage = null;
+    _ordersErrorMessage = null;
+    _loyaltyErrorMessage = null;
     notifyListeners();
 
     try {
-      final List<OrderModel> loadedOrders = await _orderRepository.getOrders();
-      final int loadedPoints = await _orderRepository.getLoyaltyPoints();
-      _orders = loadedOrders;
-      _loyaltyPoints = loadedPoints;
-    } catch (error) {
-      _errorMessage = 'Could not load your orders. Please try again.';
-      debugPrint('OrderProvider.loadOrders: $error');
+      try {
+        _orders = await _orderRepository.getOrders();
+      } catch (error) {
+        _ordersErrorMessage = 'Could not load your orders. Please try again.';
+        debugPrint('OrderProvider.loadOrders: $error');
+      }
+
+      try {
+        _loyaltyPoints = await _orderRepository.getLoyaltyPoints();
+      } catch (error) {
+        _loyaltyErrorMessage =
+            'Could not refresh your loyalty points. Please try again.';
+        debugPrint('OrderProvider.loadLoyaltyPoints: $error');
+      }
     } finally {
       _isLoading = false;
       notifyListeners();
@@ -57,7 +74,7 @@ class OrderProvider extends ChangeNotifier {
     }
 
     _isPlacingOrder = true;
-    _errorMessage = null;
+    _placementErrorMessage = null;
     notifyListeners();
 
     try {
@@ -71,17 +88,33 @@ class OrderProvider extends ChangeNotifier {
         status: AppConstants.orderStatusPreparing,
         createdAt: DateTime.now(),
       );
-      final OrderModel savedOrder = await _orderRepository.placeOrder(order);
+      late final OrderModel savedOrder;
+      try {
+        savedOrder = await _orderRepository.placeOrder(order);
+      } catch (error) {
+        _placementErrorMessage = error is StateError
+            ? error.message.toString()
+            : 'Could not place your order. Please try again.';
+        debugPrint('OrderProvider.placeOrder: $error');
+        rethrow;
+      }
+
       _orders = <OrderModel>[savedOrder, ..._orders];
       _lastPlacedOrder = savedOrder;
-      _loyaltyPoints = await _orderRepository.getLoyaltyPoints();
+      _ordersErrorMessage = null;
+
+      // The order is already committed at this point. Loyalty is refreshed as
+      // a best-effort follow-up so a points read can never report the order as
+      // failed or encourage the customer to submit it twice.
+      try {
+        _loyaltyPoints = await _orderRepository.getLoyaltyPoints();
+        _loyaltyErrorMessage = null;
+      } catch (error) {
+        _loyaltyErrorMessage =
+            'Your order was placed, but loyalty points could not be refreshed.';
+        debugPrint('OrderProvider.refreshLoyaltyAfterOrder: $error');
+      }
       return savedOrder;
-    } catch (error) {
-      _errorMessage = error is StateError
-          ? error.message.toString()
-          : 'Could not place your order. Please try again.';
-      debugPrint('OrderProvider.placeOrder: $error');
-      rethrow;
     } finally {
       _isPlacingOrder = false;
       notifyListeners();
@@ -95,10 +128,11 @@ class OrderProvider extends ChangeNotifier {
     }
 
     try {
+      _ordersErrorMessage = null;
       await _orderRepository.updateOrderStatus(id, status);
       await loadOrders();
     } catch (error) {
-      _errorMessage = 'Could not update the order status.';
+      _ordersErrorMessage = 'Could not update the order status.';
       debugPrint('OrderProvider.updateOrderStatus: $error');
       notifyListeners();
       rethrow;

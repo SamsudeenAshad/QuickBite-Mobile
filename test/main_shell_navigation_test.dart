@@ -24,6 +24,9 @@ void main() {
     final DatabaseService unusedDatabase = DatabaseService(
       databaseName: 'unused_main_shell_test.db',
     );
+    final ProductProvider productProvider = ProductProvider(
+      ProductRepository(unusedDatabase),
+    );
 
     await tester.pumpWidget(
       MultiProvider(
@@ -32,7 +35,7 @@ void main() {
             create: (_) => NavigationProvider(),
           ),
           ChangeNotifierProvider<ProductProvider>(
-            create: (_) => ProductProvider(ProductRepository(unusedDatabase)),
+            create: (_) => productProvider,
           ),
           ChangeNotifierProvider<CartProvider>(
             create: (_) => CartProvider(CartRepository(unusedDatabase)),
@@ -53,8 +56,13 @@ void main() {
     expect(find.text('Orders'), findsOneWidget);
     expect(find.text('Profile'), findsOneWidget);
 
-    await tester.tap(find.text('Menu'));
+    productProvider.search('coffee');
+    await tester.pump();
+    await tester.tap(find.text('Burgers'));
     await tester.pumpAndSettle();
+
+    expect(productProvider.searchQuery, isEmpty);
+    expect(productProvider.selectedCategory, 'Burgers');
     expect(find.text('Our menu'), findsOneWidget);
 
     await tester.tap(find.text('Cart'));

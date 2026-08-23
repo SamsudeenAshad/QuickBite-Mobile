@@ -105,12 +105,24 @@ class CartProvider extends ChangeNotifier {
     notifyListeners();
 
     try {
-      await operation();
-      _items = await _cartRepository.getCartItems();
-    } catch (error) {
-      _errorMessage = 'Could not update your cart. Please try again.';
-      debugPrint('CartProvider update: $error');
-      rethrow;
+      try {
+        await operation();
+      } catch (error) {
+        _errorMessage = 'Could not update your cart. Please try again.';
+        debugPrint('CartProvider update: $error');
+        rethrow;
+      }
+
+      // A failed refresh must not turn a committed add/increment into a
+      // retryable mutation, otherwise the same change could be applied twice.
+      try {
+        _items = await _cartRepository.getCartItems();
+      } catch (error) {
+        _errorMessage =
+            'Your cart was updated, but it could not be refreshed. '
+            'Reload the cart to see the latest items.';
+        debugPrint('CartProvider refresh after update: $error');
+      }
     } finally {
       _activeUpdates -= 1;
       notifyListeners();

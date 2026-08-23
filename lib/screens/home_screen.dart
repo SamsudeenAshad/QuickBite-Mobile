@@ -58,7 +58,14 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _chooseCategory(String category) {
-    context.read<ProductProvider>().selectCategory(category);
+    final ProductProvider products = context.read<ProductProvider>();
+    products.search('');
+    products.selectCategory(category);
+    widget.onBrowseMenu();
+  }
+
+  void _browseAllProducts() {
+    context.read<ProductProvider>().clearFilters();
     widget.onBrowseMenu();
   }
 
@@ -122,7 +129,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             _SectionHeading(
                               title: 'Browse categories',
                               actionLabel: 'See menu',
-                              onAction: widget.onBrowseMenu,
+                              onAction: _browseAllProducts,
                             ),
                             const SizedBox(height: 14),
                             _CategoryGrid(
@@ -133,7 +140,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             _SectionHeading(
                               title: 'Popular right now',
                               actionLabel: 'View all',
-                              onAction: widget.onBrowseMenu,
+                              onAction: _browseAllProducts,
                             ),
                             const SizedBox(height: 14),
                             _PopularProducts(
