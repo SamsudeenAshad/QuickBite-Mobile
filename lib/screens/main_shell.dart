@@ -6,6 +6,8 @@ import '../widgets/custom_bottom_navigation.dart';
 import 'cart_screen.dart';
 import 'checkout_screen.dart';
 import 'home_screen.dart';
+import 'orders_screen.dart';
+import 'profile_screen.dart';
 import 'products_screen.dart';
 
 class MainShell extends StatelessWidget {
@@ -42,42 +44,15 @@ class MainShell extends StatelessWidget {
                 );
               },
             ),
-            const _PendingTab(
-              icon: Icons.receipt_long_outlined,
-              title: 'Your orders',
-            ),
-            const _PendingTab(
-              icon: Icons.person_outline_rounded,
-              title: 'Your profile',
+            const OrdersScreen(),
+            ProfileScreen(
+              onOpenOrders: () => navigation.selectTab(AppTab.orders),
             ),
           ],
         ),
         bottomNavigationBar: CustomBottomNavigation(
           currentIndex: selectedIndex,
           onDestinationSelected: navigation.selectTab,
-        ),
-      ),
-    );
-  }
-}
-
-class _PendingTab extends StatelessWidget {
-  const _PendingTab({required this.icon, required this.title});
-
-  final IconData icon;
-  final String title;
-
-  @override
-  Widget build(BuildContext context) {
-    return SafeArea(
-      child: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Icon(icon, size: 48, color: Theme.of(context).colorScheme.primary),
-            const SizedBox(height: 16),
-            Text(title, style: Theme.of(context).textTheme.titleLarge),
-          ],
         ),
       ),
     );

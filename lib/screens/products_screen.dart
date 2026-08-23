@@ -220,12 +220,12 @@ class _ProductResults extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (provider.isLoading && provider.products.isEmpty) {
-      return const Padding(
-        padding: EdgeInsets.symmetric(vertical: 72),
+      return Padding(
+        padding: const EdgeInsets.symmetric(vertical: 72),
         child: Center(
           child: Semantics(
             label: 'Loading menu items',
-            child: CircularProgressIndicator(),
+            child: const CircularProgressIndicator(),
           ),
         ),
       );

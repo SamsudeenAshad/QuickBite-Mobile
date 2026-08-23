@@ -33,46 +33,46 @@ class _OrdersScreenState extends State<OrdersScreen> {
       body: SafeArea(
         top: false,
         child: Consumer<OrderProvider>(
-          builder: (
-            BuildContext context,
-            OrderProvider orderProvider,
-            Widget? child,
-          ) {
-            if (orderProvider.isLoading && orderProvider.orders.isEmpty) {
-              return const _OrdersLoadingState();
-            }
+          builder:
+              (
+                BuildContext context,
+                OrderProvider orderProvider,
+                Widget? child,
+              ) {
+                if (orderProvider.isLoading && orderProvider.orders.isEmpty) {
+                  return const _OrdersLoadingState();
+                }
 
-            if (orderProvider.errorMessage != null &&
-                orderProvider.orders.isEmpty) {
-              return StateMessage(
-                icon: Icons.receipt_long_outlined,
-                title: 'Orders are unavailable',
-                message: orderProvider.errorMessage!,
-                actionLabel: 'Try again',
-                onAction: orderProvider.loadOrders,
-              );
-            }
+                if (orderProvider.errorMessage != null &&
+                    orderProvider.orders.isEmpty) {
+                  return StateMessage(
+                    icon: Icons.receipt_long_outlined,
+                    title: 'Orders are unavailable',
+                    message: orderProvider.errorMessage!,
+                    actionLabel: 'Try again',
+                    onAction: orderProvider.loadOrders,
+                  );
+                }
 
-            if (orderProvider.orders.isEmpty) {
-              return const StateMessage(
-                icon: Icons.receipt_long_outlined,
-                title: 'No orders yet',
-                message:
-                    'Your order history will appear here after you place your first order.',
-              );
-            }
+                if (orderProvider.orders.isEmpty) {
+                  return const StateMessage(
+                    icon: Icons.receipt_long_outlined,
+                    title: 'No orders yet',
+                    message: 'Your order history will appear here after you place your first order.',
+                  );
+                }
 
-            final List<OrderModel> orders = <OrderModel>[
-              ...orderProvider.orders,
-            ]..sort(_newestOrderFirst);
+                final List<OrderModel> orders = <OrderModel>[
+                  ...orderProvider.orders,
+                ]..sort(_newestOrderFirst);
 
-            return _OrdersList(
-              orders: orders,
-              isRefreshing: orderProvider.isLoading,
-              errorMessage: orderProvider.errorMessage,
-              onRefresh: orderProvider.loadOrders,
-            );
-          },
+                return _OrdersList(
+                  orders: orders,
+                  isRefreshing: orderProvider.isLoading,
+                  errorMessage: orderProvider.errorMessage,
+                  onRefresh: orderProvider.loadOrders,
+                );
+              },
         ),
       ),
     );
@@ -140,11 +140,11 @@ class _OrdersList extends StatelessWidget {
                     ),
                   ),
                   if (isRefreshing)
-                    const SliverToBoxAdapter(
+                    SliverToBoxAdapter(
                       child: Semantics(
                         label: 'Refreshing orders',
                         liveRegion: true,
-                        child: LinearProgressIndicator(minHeight: 3),
+                        child: const LinearProgressIndicator(minHeight: 3),
                       ),
                     ),
                   if (errorMessage != null)
@@ -234,9 +234,8 @@ class _OrdersIntroduction extends StatelessWidget {
                     const SizedBox(height: 2),
                     Text(
                       'Your most recent orders appear first.',
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: AppColors.textSecondary,
-                      ),
+                      style: Theme.of(context).textTheme.bodyMedium
+                          ?.copyWith(color: AppColors.textSecondary),
                     ),
                   ],
                 ),
@@ -315,16 +314,15 @@ class _OrderCard extends StatelessWidget {
                 const SizedBox(height: 16),
                 const Divider(),
                 const SizedBox(height: 14),
-                Wrap(
-                  spacing: 24,
-                  runSpacing: 12,
-                  alignment: WrapAlignment.spaceBetween,
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
                     _OrderDetail(
                       icon: Icons.payments_outlined,
                       label: 'Payment',
                       value: order.paymentMethod,
                     ),
+                    const SizedBox(height: 12),
                     _OrderDetail(
                       icon: Icons.account_balance_wallet_outlined,
                       label: 'Total',
@@ -392,29 +390,30 @@ class _OrderDetail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Icon(icon, size: 20, color: AppColors.textSecondary),
         const SizedBox(width: 8),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Text(
-              label,
-              style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                color: AppColors.textSecondary,
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                label,
+                style: Theme.of(context).textTheme.labelSmall
+                    ?.copyWith(color: AppColors.textSecondary),
               ),
-            ),
-            const SizedBox(height: 2),
-            Text(
-              value,
-              style: (emphasize
-                      ? Theme.of(context).textTheme.titleMedium
-                      : Theme.of(context).textTheme.bodyMedium)
-                  ?.copyWith(fontWeight: FontWeight.w700),
-            ),
-          ],
+              const SizedBox(height: 2),
+              Text(
+                value,
+                style:
+                    (emphasize
+                            ? Theme.of(context).textTheme.titleMedium
+                            : Theme.of(context).textTheme.bodyMedium)
+                        ?.copyWith(fontWeight: FontWeight.w700),
+              ),
+            ],
+          ),
         ),
       ],
     );
@@ -453,7 +452,11 @@ class _OrderErrorBanner extends StatelessWidget {
                 ),
               ),
             ),
-            TextButton(onPressed: onRetry, child: const Text('Retry')),
+            TextButton(
+              onPressed: onRetry,
+              style: TextButton.styleFrom(minimumSize: const Size(48, 48)),
+              child: const Text('Retry'),
+            ),
           ],
         ),
       ),

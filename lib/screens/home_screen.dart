@@ -328,12 +328,12 @@ class _PopularProducts extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (provider.isLoading && provider.products.isEmpty) {
-      return const Padding(
-        padding: EdgeInsets.symmetric(vertical: 48),
+      return Padding(
+        padding: const EdgeInsets.symmetric(vertical: 48),
         child: Center(
           child: Semantics(
             label: 'Loading popular menu items',
-            child: CircularProgressIndicator(),
+            child: const CircularProgressIndicator(),
           ),
         ),
       );

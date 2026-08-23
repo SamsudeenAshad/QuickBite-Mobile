@@ -53,14 +53,16 @@ class PromotionsScreen extends StatelessWidget {
                               return Wrap(
                                 spacing: 16,
                                 runSpacing: 16,
-                                children: samplePromotions.map((promotion) {
-                                  return SizedBox(
-                                    width: cardWidth,
-                                    child: _PromotionCard(
-                                      promotion: promotion,
-                                    ),
-                                  );
-                                }).toList(growable: false),
+                                children: samplePromotions
+                                    .map((promotion) {
+                                      return SizedBox(
+                                        width: cardWidth,
+                                        child: _PromotionCard(
+                                          promotion: promotion,
+                                        ),
+                                      );
+                                    })
+                                    .toList(growable: false),
                               );
                             },
                       ),
@@ -112,16 +114,14 @@ class _PromotionHeader extends StatelessWidget {
                 children: <Widget>[
                   Text(
                     'A little extra to enjoy',
-                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                      fontWeight: FontWeight.w800,
-                    ),
+                    style: Theme.of(context).textTheme.headlineSmall
+                        ?.copyWith(fontWeight: FontWeight.w800),
                   ),
                   const SizedBox(height: 6),
                   Text(
                     'Browse the café offers currently featured in this student demo.',
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: AppColors.textSecondary,
-                    ),
+                    style: Theme.of(context).textTheme.bodyMedium
+                        ?.copyWith(color: AppColors.textSecondary),
                   ),
                 ],
               ),
@@ -140,8 +140,7 @@ class _InformationBanner extends StatelessWidget {
   Widget build(BuildContext context) {
     return Semantics(
       container: true,
-      label:
-          'Demo information. Promotion codes are informational and are not applied automatically at checkout.',
+      label: 'Demo information. Promotion codes are informational and are not applied automatically at checkout.',
       child: ExcludeSemantics(
         child: Container(
           padding: const EdgeInsets.all(16),
@@ -149,9 +148,8 @@ class _InformationBanner extends StatelessWidget {
             color: Theme.of(context).colorScheme.tertiaryContainer,
             borderRadius: BorderRadius.circular(16),
             border: Border.all(
-              color: Theme.of(
-                context,
-              ).colorScheme.tertiary.withValues(alpha: .22),
+              color: Theme.of(context).colorScheme.tertiary
+                  .withValues(alpha: .22),
             ),
           ),
           child: Row(
@@ -252,9 +250,8 @@ class _PromotionCard extends StatelessWidget {
                   ExcludeSemantics(
                     child: Text(
                       promotion.description,
-                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                        color: AppColors.textSecondary,
-                      ),
+                      style: Theme.of(context).textTheme.bodyLarge
+                          ?.copyWith(color: AppColors.textSecondary),
                     ),
                   ),
                   const SizedBox(height: 18),
@@ -277,8 +274,8 @@ class _PromotionCard extends StatelessWidget {
                     ),
                     child: Row(
                       children: <Widget>[
-                        ExcludeSemantics(
-                          Expanded(
+                        Expanded(
+                          child: ExcludeSemantics(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
@@ -305,20 +302,20 @@ class _PromotionCard extends StatelessWidget {
                           ),
                         ),
                         Semantics(
-                            button: true,
-                            label: 'Copy promo code ${promotion.code}',
-                            child: ExcludeSemantics(
-                              child: IconButton.filledTonal(
-                                tooltip: 'Copy code',
-                                constraints: const BoxConstraints(
-                                  minWidth: 48,
-                                  minHeight: 48,
-                                ),
-                                onPressed: () => _copyCode(context),
-                                icon: const Icon(Icons.copy_rounded),
+                          button: true,
+                          label: 'Copy promo code ${promotion.code}',
+                          child: ExcludeSemantics(
+                            child: IconButton.filledTonal(
+                              tooltip: 'Copy code',
+                              constraints: const BoxConstraints(
+                                minWidth: 48,
+                                minHeight: 48,
                               ),
+                              onPressed: () => _copyCode(context),
+                              icon: const Icon(Icons.copy_rounded),
                             ),
                           ),
+                        ),
                       ],
                     ),
                   ),
@@ -361,9 +358,8 @@ class _PromotionFact extends StatelessWidget {
           Expanded(
             child: Text(
               label,
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: AppColors.textSecondary,
-              ),
+              style: Theme.of(context).textTheme.bodySmall
+                  ?.copyWith(color: AppColors.textSecondary),
             ),
           ),
         ],

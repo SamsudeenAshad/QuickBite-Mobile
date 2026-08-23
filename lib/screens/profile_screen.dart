@@ -123,6 +123,7 @@ class ProfileScreen extends StatelessWidget {
           actions: <Widget>[
             TextButton(
               onPressed: () => Navigator.of(dialogContext).pop(false),
+              style: TextButton.styleFrom(minimumSize: const Size(48, 48)),
               child: const Text('Cancel'),
             ),
             FilledButton(
@@ -231,9 +232,8 @@ class _ContactLine extends StatelessWidget {
         Expanded(
           child: Text(
             value,
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              color: AppColors.textSecondary,
-            ),
+            style: Theme.of(context).textTheme.bodySmall
+                ?.copyWith(color: AppColors.textSecondary),
           ),
         ),
       ],
@@ -264,129 +264,127 @@ class _LoyaltyCard extends StatelessWidget {
       label:
           'QuickBite loyalty. Your points: $points. Earn 1 point for every 100 rupees spent on non-cancelled orders.$loadingLabel',
       child: Container(
-          padding: const EdgeInsets.all(24),
-          decoration: BoxDecoration(
-            color: AppColors.secondary,
-            borderRadius: BorderRadius.circular(24),
-            boxShadow: <BoxShadow>[
-              BoxShadow(
-                color: AppColors.secondary.withValues(alpha: .20),
-                blurRadius: 24,
-                offset: const Offset(0, 12),
-              ),
-            ],
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              ExcludeSemantics(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: <Widget>[
-              Row(
+        padding: const EdgeInsets.all(24),
+        decoration: BoxDecoration(
+          color: AppColors.secondary,
+          borderRadius: BorderRadius.circular(24),
+          boxShadow: <BoxShadow>[
+            BoxShadow(
+              color: AppColors.secondary.withValues(alpha: .20),
+              blurRadius: 24,
+              offset: const Offset(0, 12),
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            ExcludeSemantics(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
-                  Container(
-                    width: 48,
-                    height: 48,
-                    decoration: BoxDecoration(
-                      color: Colors.white.withValues(alpha: .14),
-                      borderRadius: BorderRadius.circular(16),
+                  Row(
+                    children: <Widget>[
+                      Container(
+                        width: 48,
+                        height: 48,
+                        decoration: BoxDecoration(
+                          color: Colors.white.withValues(alpha: .14),
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        child: const Icon(
+                          Icons.workspace_premium_outlined,
+                          color: Colors.white,
+                          size: 27,
+                        ),
+                      ),
+                      const SizedBox(width: 14),
+                      Expanded(
+                        child: Text(
+                          'QuickBite loyalty',
+                          style: Theme.of(context).textTheme.titleMedium
+                              ?.copyWith(color: Colors.white),
+                        ),
+                      ),
+                      if (isLoading)
+                        const SizedBox(
+                          width: 24,
+                          height: 24,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2.5,
+                            color: Colors.white,
+                          ),
+                        ),
+                    ],
+                  ),
+                  const SizedBox(height: 24),
+                  Text(
+                    'YOUR POINTS',
+                    style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                      color: Colors.white.withValues(alpha: .78),
+                      fontWeight: FontWeight.w800,
+                      letterSpacing: 1,
                     ),
-                    child: const Icon(
-                      Icons.workspace_premium_outlined,
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    '$points',
+                    style: Theme.of(context).textTheme.displaySmall?.copyWith(
                       color: Colors.white,
-                      size: 27,
+                      fontWeight: FontWeight.w900,
                     ),
                   ),
-                  const SizedBox(width: 14),
-                  Expanded(
-                    child: Text(
-                      'QuickBite loyalty',
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        color: Colors.white,
-                      ),
-                    ),
+                  const SizedBox(height: 8),
+                  Text(
+                    'Earn 1 point for every Rs. 100 spent on non-cancelled orders.',
+                    style: Theme.of(context).textTheme.bodyMedium
+                        ?.copyWith(color: Colors.white.withValues(alpha: .88)),
                   ),
-                  if (isLoading)
-                    const SizedBox(
-                      width: 24,
-                      height: 24,
-                      child: CircularProgressIndicator(
-                        strokeWidth: 2.5,
-                        color: Colors.white,
-                      ),
-                    ),
                 ],
               ),
-              const SizedBox(height: 24),
-              Text(
-                'YOUR POINTS',
-                style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                  color: Colors.white.withValues(alpha: .78),
-                  fontWeight: FontWeight.w800,
-                  letterSpacing: 1,
+            ),
+            if (errorMessage != null) ...<Widget>[
+              const SizedBox(height: 16),
+              Container(
+                padding: const EdgeInsets.fromLTRB(12, 8, 6, 8),
+                decoration: BoxDecoration(
+                  color: Colors.white.withValues(alpha: .12),
+                  borderRadius: BorderRadius.circular(14),
                 ),
-              ),
-              const SizedBox(height: 2),
-              Text(
-                '$points',
-                style: Theme.of(context).textTheme.displaySmall?.copyWith(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w900,
-                ),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                'Earn 1 point for every Rs. 100 spent on non-cancelled orders.',
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: Colors.white.withValues(alpha: .88),
-                ),
-              ),
+                child: Row(
+                  children: <Widget>[
+                    const Icon(
+                      Icons.info_outline_rounded,
+                      color: Colors.white,
+                      size: 20,
+                    ),
+                    const SizedBox(width: 8),
+                    const Expanded(
+                      child: Text(
+                        'Points may be out of date.',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                    Semantics(
+                      button: true,
+                      label: 'Retry loading loyalty points',
+                      child: ExcludeSemantics(
+                        child: TextButton(
+                          onPressed: onRetry,
+                          style: TextButton.styleFrom(
+                            foregroundColor: Colors.white,
+                            minimumSize: const Size(48, 48),
+                          ),
+                          child: const Text('Retry'),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
-              if (errorMessage != null) ...<Widget>[
-                const SizedBox(height: 16),
-                Container(
-                  padding: const EdgeInsets.fromLTRB(12, 8, 6, 8),
-                  decoration: BoxDecoration(
-                    color: Colors.white.withValues(alpha: .12),
-                    borderRadius: BorderRadius.circular(14),
-                  ),
-                  child: Row(
-                    children: <Widget>[
-                      const Icon(
-                        Icons.info_outline_rounded,
-                        color: Colors.white,
-                        size: 20,
-                      ),
-                      const SizedBox(width: 8),
-                      const Expanded(
-                        child: Text(
-                          'Points may be out of date.',
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ),
-                      Semantics(
-                        button: true,
-                        label: 'Retry loading loyalty points',
-                        child: ExcludeSemantics(
-                          child: TextButton(
-                            onPressed: onRetry,
-                            style: TextButton.styleFrom(
-                              foregroundColor: Colors.white,
-                              minimumSize: const Size(48, 48),
-                            ),
-                            child: const Text('Retry'),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
             ],
-          ),
+          ],
+        ),
       ),
     );
   }
@@ -493,10 +491,8 @@ class _ProfileOption extends StatelessWidget {
           ),
           title: Text(
             title,
-            style: Theme.of(context).textTheme.titleSmall?.copyWith(
-              color: color,
-              fontWeight: FontWeight.w800,
-            ),
+            style: Theme.of(context).textTheme.titleSmall
+                ?.copyWith(color: color, fontWeight: FontWeight.w800),
           ),
           subtitle: Text(subtitle),
           trailing: Icon(
