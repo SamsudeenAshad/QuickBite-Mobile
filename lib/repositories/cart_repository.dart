@@ -77,6 +77,44 @@ class CartRepository {
     );
   }
 
+  Future<void> adjustQuantity(int cartItemId, int difference) async {
+    if (difference == 0) {
+      return;
+    }
+
+    final Database db = await _databaseService.database;
+    await db.transaction((Transaction transaction) async {
+      final List<Map<String, Object?>> existing = await transaction.query(
+        'cart_items',
+        columns: <String>['quantity'],
+        where: 'id = ?',
+        whereArgs: <Object?>[cartItemId],
+        limit: 1,
+      );
+      if (existing.isEmpty) {
+        return;
+      }
+
+      final int currentQuantity = (existing.first['quantity'] as num).toInt();
+      final int nextQuantity = currentQuantity + difference;
+      if (nextQuantity <= 0) {
+        await transaction.delete(
+          'cart_items',
+          where: 'id = ?',
+          whereArgs: <Object?>[cartItemId],
+        );
+        return;
+      }
+
+      await transaction.update(
+        'cart_items',
+        <String, Object?>{'quantity': nextQuantity},
+        where: 'id = ?',
+        whereArgs: <Object?>[cartItemId],
+      );
+    });
+  }
+
   Future<void> removeItem(int cartItemId) async {
     final Database db = await _databaseService.database;
     await db.delete(

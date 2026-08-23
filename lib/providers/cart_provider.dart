@@ -12,12 +12,12 @@ class CartProvider extends ChangeNotifier {
 
   List<CartItem> _items = <CartItem>[];
   bool _isLoading = false;
-  bool _isUpdating = false;
+  int _activeUpdates = 0;
   String? _errorMessage;
 
   List<CartItem> get items => List<CartItem>.unmodifiable(_items);
   bool get isLoading => _isLoading;
-  bool get isUpdating => _isUpdating;
+  bool get isUpdating => _activeUpdates > 0;
   String? get errorMessage => _errorMessage;
   bool get isEmpty => _items.isEmpty;
   int get itemCount =>
@@ -64,9 +64,7 @@ class CartProvider extends ChangeNotifier {
     if (cartItemId == null) {
       throw StateError('This cart item has not been saved yet.');
     }
-    await _runCartUpdate(
-      () => _cartRepository.updateQuantity(cartItemId, item.quantity + 1),
-    );
+    await _runCartUpdate(() => _cartRepository.adjustQuantity(cartItemId, 1));
   }
 
   Future<void> decrementQuantity(CartItem item) async {
@@ -74,9 +72,7 @@ class CartProvider extends ChangeNotifier {
     if (cartItemId == null) {
       throw StateError('This cart item has not been saved yet.');
     }
-    await _runCartUpdate(
-      () => _cartRepository.updateQuantity(cartItemId, item.quantity - 1),
-    );
+    await _runCartUpdate(() => _cartRepository.adjustQuantity(cartItemId, -1));
   }
 
   Future<void> updateQuantity(CartItem item, int quantity) async {
@@ -104,11 +100,7 @@ class CartProvider extends ChangeNotifier {
   }
 
   Future<void> _runCartUpdate(Future<void> Function() operation) async {
-    if (_isUpdating) {
-      return;
-    }
-
-    _isUpdating = true;
+    _activeUpdates += 1;
     _errorMessage = null;
     notifyListeners();
 
@@ -120,7 +112,7 @@ class CartProvider extends ChangeNotifier {
       debugPrint('CartProvider update: $error');
       rethrow;
     } finally {
-      _isUpdating = false;
+      _activeUpdates -= 1;
       notifyListeners();
     }
   }

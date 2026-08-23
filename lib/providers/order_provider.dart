@@ -50,7 +50,6 @@ class OrderProvider extends ChangeNotifier {
     required String customerName,
     required String phone,
     required String address,
-    required double total,
     required String paymentMethod,
   }) async {
     if (_isPlacingOrder) {
@@ -66,7 +65,8 @@ class OrderProvider extends ChangeNotifier {
         customerName: customerName.trim(),
         phone: phone.trim(),
         address: address.trim(),
-        total: total,
+        // The repository calculates the authoritative amount from SQLite.
+        total: 0,
         paymentMethod: paymentMethod,
         status: AppConstants.orderStatusPreparing,
         createdAt: DateTime.now(),
