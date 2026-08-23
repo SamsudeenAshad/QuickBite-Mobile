@@ -24,7 +24,7 @@ void main() {
       ),
     );
 
-    expect(find.text('Your cart is empty'), findsOneWidget);
+    expect(find.text('Your cart is waiting'), findsOneWidget);
     expect(find.text('Proceed to Checkout'), findsNothing);
   });
 }
