@@ -36,9 +36,7 @@ class MainShell extends StatelessWidget {
                 ScaffoldMessenger.of(context)
                   ..hideCurrentSnackBar()
                   ..showSnackBar(
-                    const SnackBar(
-                      content: Text('Checkout is opening soon.'),
-                    ),
+                    const SnackBar(content: Text('Checkout is opening soon.')),
                   );
               },
             ),

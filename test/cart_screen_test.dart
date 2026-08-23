@@ -20,9 +20,7 @@ void main() {
     await tester.pumpWidget(
       ChangeNotifierProvider<CartProvider>.value(
         value: cart,
-        child: MaterialApp(
-          home: CartScreen(onCheckout: () {}),
-        ),
+        child: MaterialApp(home: CartScreen(onCheckout: () {})),
       ),
     );
 
