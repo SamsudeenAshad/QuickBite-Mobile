@@ -1,4 +1,4 @@
-# -QuickBite-Cafe
+# QuickBite-Cafe
 
 # Build a Simple Flutter Mobile App – QuickBite Café
 
