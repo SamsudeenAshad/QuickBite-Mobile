@@ -1,3 +1,171 @@
+# QuickBite Café
+
+QuickBite Café is a small, beginner-friendly Flutter ordering application for an
+undergraduate mobile development project. It uses a warm Material 3 interface,
+Provider state management, and a local SQLite database. The Android application
+does not require a backend or user account.
+
+## Implemented features
+
+- Two-second branded splash screen and responsive five-tab navigation
+- Home page with search, categories, popular products, and a promotion banner
+- Full menu with text search, category filters, product details, ratings, and
+  quantity selection
+- Persistent SQLite cart with add, increase, decrease, remove, subtotal,
+  delivery charge, and total calculations
+- Checkout form with Cash on Delivery, Credit/Debit Card, and Digital Wallet
+  choices
+- Customer, phone, address, card number, expiry date, and CVV validation
+- Simulated order placement, confirmation details, and persistent order history
+- Promotions page with copyable demo codes
+- Loyalty points calculated at 1 point for every Rs. 100 spent on non-cancelled
+  orders
+- Demo profile, About dialog, and clearly explained mock Logout action
+- Loading, empty, error, retry, responsive layout, and accessibility states
+
+## Main application flow
+
+1. Browse or search for a menu item.
+2. Open its details, choose a quantity, and add it to the cart.
+3. Review the cart and proceed to checkout.
+4. Enter delivery details and select a simulated payment method.
+5. Place the order and view its confirmation.
+6. Follow saved orders from the Orders tab and loyalty points from Profile.
+
+## Technology and architecture
+
+The project deliberately uses a simple layered structure so students can trace
+data from a screen to SQLite without unnecessary enterprise architecture.
+
+| Layer | Responsibility |
+| --- | --- |
+| Screens and widgets | Material 3 interface, navigation, forms, and reusable UI |
+| Providers | UI state, loading/error states, cart changes, and order actions |
+| Repositories | Product, cart, and order database operations |
+| `DatabaseService` | Opens SQLite, creates tables, and seeds sample products |
+| Models and data | Typed products, cart items, orders, promotions, and mock data |
+
+Provider supplies `ProductProvider`, `CartProvider`, `OrderProvider`, and
+`NavigationProvider` through the app root. Repositories keep SQL outside the UI.
+SQLite stores the following local data:
+
+- `products`: seeded the first time the database is created
+- `cart_items`: persistent product IDs and quantities
+- `orders`: customer delivery details, total, payment method, status, and date
+
+Order placement runs in one SQLite transaction. It calculates the authoritative
+total from the saved cart, inserts the order, and clears the cart together. If
+one step fails, the transaction is rolled back.
+
+## Run on Android
+
+### Prerequisites
+
+- Flutter SDK with Dart 3.13.1 or newer
+- Android Studio with the Flutter and Dart plugins
+- Android SDK, Platform Tools, and either an Android emulator or a USB-connected
+  Android device with developer mode enabled
+
+Run `flutter doctor` first and resolve any Android toolchain warnings that apply
+to your machine.
+
+### Android Studio
+
+1. Open the project directory that contains `pubspec.yaml`.
+2. Allow Android Studio to fetch Flutter packages, or run `flutter pub get` in
+   its Terminal window.
+3. Open Device Manager and start an emulator, or connect a physical Android
+   device.
+4. Select the device in the toolbar.
+5. Open `lib/main.dart` and choose **Run**.
+
+Android Studio can also provide hot reload while the app is running.
+
+### Command line
+
+From the project root, run:
+
+```bash
+flutter doctor
+flutter pub get
+flutter devices
+flutter run
+```
+
+If several devices are available, use the identifier shown by `flutter devices`:
+
+```bash
+flutter run -d <device-id>
+```
+
+## Simulated payment and privacy
+
+This coursework application does **not** contact a payment gateway or process a
+real bank transaction. Cash, card, and wallet selections only demonstrate the
+checkout flow.
+
+When card payment is selected, the cardholder name, number, expiry date, and CVV
+are validated in the form. These values stay inside the checkout screen and are
+not sent to a provider, written to SQLite, or included in the saved order. Do not
+enter real payment details when demonstrating the app.
+
+The profile and Logout option are also demonstrations; the application has no
+real authentication or remote account.
+
+## Project structure
+
+```text
+android/                    Android runner and Gradle configuration
+lib/
+  main.dart                Application entry point
+  app.dart                 Theme, providers, and initial navigation
+  data/                    Sample products and promotions
+  models/                  Product, cart, order, and promotion models
+  providers/               Provider/ChangeNotifier state
+  repositories/            SQLite data access
+  screens/                 App screens and main navigation shell
+  services/                SQLite database setup
+  theme/                   Material 3 theme and café color tokens
+  utils/                   Constants, validators, and currency formatting
+  widgets/                 Reusable cards, images, banners, and navigation
+test/                      Unit and widget tests
+```
+
+## Validation and tests
+
+The included tests cover models, currency formatting, form validators, tab
+navigation, the splash screen, the Material 3 theme, empty-cart protection,
+checkout protection, promotions, profile loyalty points, and order history.
+
+Use the following checks before a demonstration or coursework submission:
+
+```bash
+dart format --set-exit-if-changed lib test
+flutter analyze
+flutter test
+```
+
+Run the application on your configured Android emulator or physical device as
+the final platform check. No APK build result is claimed in this document.
+
+## Demo data and network images
+
+- Products, promotions, profile details, and initial prices are sample data.
+- Promotion codes are informational and are not automatically applied to an
+  order total.
+- Product photos load from Unsplash over HTTPS, so they need an internet
+  connection. The UI displays a café placeholder if an image cannot load.
+- Products, cart entries, and orders remain local in SQLite; there is no cloud
+  synchronization.
+- To start with a new demo database, clear the app's storage or uninstall and
+  reinstall it on the emulator/device.
+
+---
+
+## Original assignment specification
+
+The original project brief is preserved below for coursework reference.
+
 # QuickBite-Cafe
 
 # Build a Simple Flutter Mobile App – QuickBite Café

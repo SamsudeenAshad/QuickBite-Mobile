@@ -102,15 +102,17 @@ class OrderConfirmationScreen extends StatelessWidget {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: <Widget>[
-                              Row(
+                              Wrap(
+                                alignment: WrapAlignment.spaceBetween,
+                                crossAxisAlignment: WrapCrossAlignment.center,
+                                spacing: 12,
+                                runSpacing: 10,
                                 children: <Widget>[
-                                  Expanded(
-                                    child: Text(
-                                      'Order details',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .titleLarge,
-                                    ),
+                                  Text(
+                                    'Order details',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .titleLarge,
                                   ),
                                   Container(
                                     padding: const EdgeInsets.symmetric(
