@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../providers/navigation_provider.dart';
 import '../widgets/custom_bottom_navigation.dart';
 import 'cart_screen.dart';
+import 'checkout_screen.dart';
 import 'home_screen.dart';
 import 'products_screen.dart';
 
@@ -33,11 +34,12 @@ class MainShell extends StatelessWidget {
             const ProductsScreen(),
             CartScreen(
               onCheckout: () {
-                ScaffoldMessenger.of(context)
-                  ..hideCurrentSnackBar()
-                  ..showSnackBar(
-                    const SnackBar(content: Text('Checkout is opening soon.')),
-                  );
+                Navigator.of(context).push(
+                  MaterialPageRoute<void>(
+                    builder: (_) =>
+                        CheckoutScreen(onBackHome: navigation.goHome),
+                  ),
+                );
               },
             ),
             const _PendingTab(
