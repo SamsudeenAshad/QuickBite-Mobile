@@ -19,6 +19,7 @@ import 'screens/admin_screen.dart';
 import 'screens/splash_screen.dart';
 import 'services/database_service.dart';
 import 'theme/app_theme.dart';
+import 'utils/app_constants.dart';
 
 class QuickBiteApp extends StatelessWidget {
   const QuickBiteApp({super.key});
@@ -50,7 +51,7 @@ class QuickBiteApp extends StatelessWidget {
       ],
       child: Consumer<ThemeProvider>(
         builder: (context, themeProvider, _) => MaterialApp(
-          title: 'QuickBite Café',
+          title: AppConstants.appName,
           debugShowCheckedModeBanner: false,
           theme: AppTheme.light,
           darkTheme: AppTheme.dark,

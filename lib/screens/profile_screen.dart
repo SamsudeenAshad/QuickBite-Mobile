@@ -4,6 +4,8 @@ import 'package:provider/provider.dart';
 import '../providers/order_provider.dart';
 import '../models/app_user.dart';
 import '../theme/app_theme.dart';
+import '../utils/app_constants.dart';
+import '../widgets/brand_logo.dart';
 import 'promotions_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -101,21 +103,9 @@ class ProfileScreen extends StatelessWidget {
   void _showAbout(BuildContext context) {
     showAboutDialog(
       context: context,
-      applicationName: 'QuickBite Café',
+      applicationName: AppConstants.appName,
       applicationVersion: '1.0.0',
-      applicationIcon: Container(
-        width: 56,
-        height: 56,
-        decoration: BoxDecoration(
-          color: AppColors.primary,
-          borderRadius: BorderRadius.circular(18),
-        ),
-        child: const Icon(
-          Icons.local_cafe_rounded,
-          color: Colors.white,
-          size: 30,
-        ),
-      ),
+      applicationIcon: const BrandLogo(size: 64),
       children: const <Widget>[
         Text(
           'A simple local café ordering experience created as an undergraduate Flutter project.',
@@ -130,7 +120,7 @@ class ProfileScreen extends StatelessWidget {
       builder: (BuildContext dialogContext) {
         return AlertDialog(
           icon: const Icon(Icons.logout_rounded),
-          title: const Text('Log out of QuickBite?'),
+          title: const Text('Log out of Villi’s Cafe?'),
           content: const Text('You will return to the sign-in screen.'),
           actions: <Widget>[
             TextButton(
@@ -268,7 +258,7 @@ class _LoyaltyCard extends StatelessWidget {
       container: true,
       explicitChildNodes: true,
       label:
-          'QuickBite loyalty. Your points: $points. Earn 1 point for every 100 rupees spent on non-cancelled orders.$loadingLabel',
+          'Villi’s Cafe loyalty. Your points: $points. Earn 1 point for every 100 rupees spent on non-cancelled orders.$loadingLabel',
       child: Container(
         padding: const EdgeInsets.all(24),
         decoration: BoxDecoration(
@@ -307,7 +297,7 @@ class _LoyaltyCard extends StatelessWidget {
                       const SizedBox(width: 14),
                       Expanded(
                         child: Text(
-                          'QuickBite loyalty',
+                          'Villi’s Cafe loyalty',
                           style: Theme.of(context).textTheme.titleMedium
                               ?.copyWith(color: Colors.white),
                         ),
@@ -461,9 +451,9 @@ class _ProfileOptions extends StatelessWidget {
           const Divider(),
           _ProfileOption(
             icon: Icons.storefront_outlined,
-            title: 'About QuickBite',
+            title: 'About Villi’s Cafe',
             subtitle: 'Learn more about this café app',
-            semanticsLabel: 'Open About QuickBite',
+            semanticsLabel: 'Open About Villi’s Cafe',
             onTap: onShowAbout,
           ),
           const Divider(),
@@ -471,7 +461,7 @@ class _ProfileOptions extends StatelessWidget {
             icon: Icons.logout_rounded,
             title: 'Logout',
             subtitle: 'Return to sign in',
-            semanticsLabel: 'Log out of QuickBite',
+            semanticsLabel: 'Log out of Villi’s Cafe',
             foregroundColor: AppColors.danger,
             onTap: onLogout,
           ),

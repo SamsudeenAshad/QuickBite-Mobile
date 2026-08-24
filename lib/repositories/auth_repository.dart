@@ -93,7 +93,7 @@ class AuthRepository {
 
   Future<void> _ensureAdmin(Database db) async {
     await db.insert('users', <String, Object?>{
-      'name': 'QuickBite Administrator',
+      'name': 'Villi’s Cafe Administrator',
       'phone': '000000000',
       'email': 'admin',
       'passwordHash': _hashPassword('admin', 'admin123'),

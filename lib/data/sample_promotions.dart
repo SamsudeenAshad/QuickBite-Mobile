@@ -5,7 +5,7 @@ const List<Promotion> samplePromotions = <Promotion>[
     id: 'weekend-special',
     title: 'Weekend Special',
     description: 'Enjoy 20% off selected burgers all weekend.',
-    code: 'QUICK20',
+    code: 'VILLI20',
     availability: 'Friday to Sunday',
     terms: 'Valid on selected burgers while stocks last.',
     category: PromotionCategory.burgers,

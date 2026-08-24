@@ -7,13 +7,13 @@ void main() {
     await tester.pumpWidget(
       MaterialApp(
         theme: AppTheme.light,
-        home: const Scaffold(body: Text('QuickBite Café')),
+        home: const Scaffold(body: Text('Villi’s Cafe')),
       ),
     );
 
-    expect(find.text('QuickBite Café'), findsOneWidget);
+    expect(find.text('Villi’s Cafe'), findsOneWidget);
     expect(
-      Theme.of(tester.element(find.text('QuickBite Café'))).useMaterial3,
+      Theme.of(tester.element(find.text('Villi’s Cafe'))).useMaterial3,
       isTrue,
     );
   });

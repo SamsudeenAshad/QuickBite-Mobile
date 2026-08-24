@@ -51,7 +51,7 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    expect(find.text('QuickBite Café'), findsOneWidget);
+    expect(find.text('Villi’s Cafe'), findsOneWidget);
     expect(find.text('Home'), findsOneWidget);
     expect(find.text('Menu'), findsOneWidget);
     expect(find.text('Cart'), findsOneWidget);

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import '../theme/app_theme.dart';
 import '../utils/app_constants.dart';
+import '../widgets/brand_logo.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({
@@ -105,24 +106,21 @@ class _SplashLogo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Widget logo = Container(
-      width: 104,
-      height: 104,
+    final Widget logo = DecoratedBox(
       decoration: BoxDecoration(
-        color: AppColors.primary,
-        borderRadius: BorderRadius.circular(32),
+        shape: BoxShape.circle,
+        color: Theme.of(context).colorScheme.surface.withValues(alpha: .92),
         boxShadow: <BoxShadow>[
           BoxShadow(
-            color: AppColors.primary.withValues(alpha: 0.25),
+            color: AppColors.primary.withValues(alpha: 0.22),
             blurRadius: 28,
             offset: const Offset(0, 14),
           ),
         ],
       ),
-      child: const Icon(
-        Icons.local_cafe_rounded,
-        color: Colors.white,
-        size: 52,
+      child: const Padding(
+        padding: EdgeInsets.all(10),
+        child: BrandLogo(size: 104),
       ),
     );
 

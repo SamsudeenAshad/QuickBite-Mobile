@@ -6,7 +6,7 @@
 
 ---
 
-**Project:** QuickBite Cafe
+**Project:** Villi’s Cafe
 **Generated:** 2026-08-24 00:09:48
 **Category:** Restaurant/Food Service
 **Design Dials:** Variance 5/10 (Balanced / Modern) | Motion 4/10 (Standard) | Density 5/10 (Standard)

@@ -1,6 +1,6 @@
-# QuickBite Café
+# Villi’s Cafe
 
-QuickBite Café is a small, beginner-friendly Flutter ordering application for an
+Villi’s Cafe is a small, beginner-friendly Flutter ordering application for an
 undergraduate mobile development project. It uses a warm Material 3 interface,
 Provider state management, and a local SQLite database. The Android application
 does not require a backend or user account.
@@ -166,17 +166,17 @@ the final platform check. No APK build result is claimed in this document.
 
 The original project brief is preserved below for coursework reference.
 
-# QuickBite-Cafe
+# Villi’s Cafe
 
-# Build a Simple Flutter Mobile App – QuickBite Café
+# Build a Simple Flutter Mobile App – Villi’s Cafe
 
 Act as a **Flutter mobile application developer and UI/UX designer**.
 
-Create a simple but complete Android mobile application called **QuickBite Café**.
+Create a simple but complete Android mobile application called **Villi’s Cafe**.
 
 ## Scenario
 
-QuickBite Café is a small local café that wants a mobile application where customers can:
+Villi’s Cafe is a small local café that wants a mobile application where customers can:
 
 * View available food and drinks
 * Browse products by category
@@ -218,7 +218,7 @@ Create approximately **7 main screens**.
 
 Display:
 
-* QuickBite Café logo
+* Villi’s Cafe logo
 * App name
 * Small loading animation
 
@@ -393,7 +393,7 @@ Example:
 
 Promo Code:
 
-QUICK20
+VILLI20
 
 Display promotions using attractive cards or banners.
 
@@ -467,7 +467,7 @@ Include simple menu options:
 
 * My Orders
 * Promotions
-* About QuickBite
+* About Villi’s Cafe
 * Logout
 
 No advanced authentication is required.

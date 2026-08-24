@@ -17,7 +17,7 @@ void main() {
       ),
     );
 
-    expect(find.text('QuickBite Café'), findsOneWidget);
+    expect(find.text('Villi’s Cafe'), findsOneWidget);
     expect(finished, isFalse);
 
     await tester.pump(const Duration(milliseconds: 51));

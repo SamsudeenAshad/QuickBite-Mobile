@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 
 import '../providers/auth_provider.dart';
 import '../theme/app_theme.dart';
+import '../utils/app_constants.dart';
+import '../widgets/brand_logo.dart';
 import '../utils/validators.dart';
 import '../utils/keyboard_helper.dart';
 
@@ -236,7 +238,7 @@ class _AuthScreenState extends State<AuthScreen> {
                     ),
                     const SizedBox(height: 16),
                     const Text(
-                      'Your account stays on this device. QuickBite does not send credentials to a server.',
+                      'Your account stays on this device. Villi’s Cafe does not send credentials to a server.',
                       textAlign: TextAlign.center,
                       style: TextStyle(color: AppColors.textSecondary),
                     ),
@@ -258,22 +260,10 @@ class _AuthBrand extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        Container(
-          width: 72,
-          height: 72,
-          decoration: BoxDecoration(
-            color: AppColors.primary,
-            borderRadius: BorderRadius.circular(24),
-          ),
-          child: const Icon(
-            Icons.local_cafe_rounded,
-            color: Colors.white,
-            size: 38,
-          ),
-        ),
+        const BrandLogo(size: 88),
         const SizedBox(height: 14),
         Text(
-          'QuickBite Café',
+          AppConstants.appName,
           style: Theme.of(context).textTheme.headlineMedium,
         ),
         const SizedBox(height: 4),

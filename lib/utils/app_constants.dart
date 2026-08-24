@@ -1,7 +1,7 @@
 class AppConstants {
   AppConstants._();
 
-  static const String appName = 'QuickBite Café';
+  static const String appName = 'Villi’s Cafe';
   static const String databaseName = 'quickbite_cafe.db';
   static const int databaseVersion = 4;
 
@@ -53,5 +53,5 @@ class AppConstants {
   static const String promotionTitle = 'Weekend Special';
   static const String promotionDescription =
       'Get 20% OFF selected burgers this weekend.';
-  static const String promotionCode = 'QUICK20';
+  static const String promotionCode = 'VILLI20';
 }
