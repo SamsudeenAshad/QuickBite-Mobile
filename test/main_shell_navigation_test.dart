@@ -6,6 +6,7 @@ import 'package:quickbite_cafe/providers/cart_provider.dart';
 import 'package:quickbite_cafe/providers/navigation_provider.dart';
 import 'package:quickbite_cafe/providers/order_provider.dart';
 import 'package:quickbite_cafe/providers/product_provider.dart';
+import 'package:quickbite_cafe/providers/theme_provider.dart';
 import 'package:quickbite_cafe/repositories/cart_repository.dart';
 import 'package:quickbite_cafe/repositories/order_repository.dart';
 import 'package:quickbite_cafe/repositories/product_repository.dart';
@@ -34,6 +35,7 @@ void main() {
           ChangeNotifierProvider<NavigationProvider>(
             create: (_) => NavigationProvider(),
           ),
+          ChangeNotifierProvider<ThemeProvider>(create: (_) => ThemeProvider()),
           ChangeNotifierProvider<ProductProvider>(
             create: (_) => productProvider,
           ),

@@ -17,4 +17,21 @@ void main() {
       isTrue,
     );
   });
+
+  testWidgets('dark Material 3 theme uses dark café surfaces', (tester) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: AppTheme.light,
+        darkTheme: AppTheme.dark,
+        themeMode: ThemeMode.dark,
+        home: const Scaffold(body: Text('Dark QuickBite')),
+      ),
+    );
+
+    final ThemeData theme = Theme.of(
+      tester.element(find.text('Dark QuickBite')),
+    );
+    expect(theme.brightness, Brightness.dark);
+    expect(theme.colorScheme.surface.computeLuminance(), lessThan(0.1));
+  });
 }

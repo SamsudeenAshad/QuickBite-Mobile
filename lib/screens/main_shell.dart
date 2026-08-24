@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/navigation_provider.dart';
+import '../providers/theme_provider.dart';
 import '../models/app_user.dart';
 import '../widgets/custom_bottom_navigation.dart';
 import 'cart_screen.dart';
@@ -23,6 +24,7 @@ class MainShell extends StatelessWidget {
   Widget build(BuildContext context) {
     final NavigationProvider navigation = context.watch<NavigationProvider>();
     final int selectedIndex = navigation.selectedIndex;
+    final ThemeProvider themeProvider = context.watch<ThemeProvider>();
 
     return PopScope<void>(
       canPop: selectedIndex == AppTab.home,
@@ -60,6 +62,8 @@ class MainShell extends StatelessWidget {
               onOpenOrders: () => navigation.selectTab(AppTab.orders),
               user: user,
               onLogout: onLogout,
+              isDarkMode: themeProvider.isDarkMode,
+              onDarkModeChanged: themeProvider.setDarkMode,
             ),
           ],
         ),

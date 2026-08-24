@@ -202,7 +202,7 @@ class _AdminChatState extends State<_AdminChat> {
                               style: TextStyle(
                                 color: message.fromAdmin
                                     ? Colors.white
-                                    : AppColors.textPrimary,
+                                    : Theme.of(context).colorScheme.onSurface,
                               ),
                             ),
                           ),
@@ -212,9 +212,13 @@ class _AdminChatState extends State<_AdminChat> {
             ),
             Container(
               padding: const EdgeInsets.all(12),
-              decoration: const BoxDecoration(
-                color: AppColors.surface,
-                border: Border(top: BorderSide(color: AppColors.border)),
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.surface,
+                border: Border(
+                  top: BorderSide(
+                    color: Theme.of(context).colorScheme.outlineVariant,
+                  ),
+                ),
               ),
               child: Row(
                 children: <Widget>[

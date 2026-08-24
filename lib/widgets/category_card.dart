@@ -22,8 +22,8 @@ class CategoryCard extends StatelessWidget {
         ? AppColors.primaryContainer
         : Theme.of(context).colorScheme.surface;
     final Color foregroundColor = selected
-        ? AppColors.primary
-        : AppColors.textPrimary;
+        ? Theme.of(context).colorScheme.primary
+        : Theme.of(context).colorScheme.onSurface;
 
     return Semantics(
       button: true,
@@ -36,7 +36,9 @@ class CategoryCard extends StatelessWidget {
           color: backgroundColor,
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
-            color: selected ? AppColors.primary : AppColors.border,
+            color: selected
+                ? Theme.of(context).colorScheme.primary
+                : Theme.of(context).colorScheme.outlineVariant,
           ),
           boxShadow: <BoxShadow>[
             BoxShadow(
@@ -65,7 +67,7 @@ class CategoryCard extends StatelessWidget {
                       decoration: BoxDecoration(
                         color: selected
                             ? AppColors.primary
-                            : AppColors.surfaceMuted,
+                            : Theme.of(context).colorScheme.secondaryContainer,
                         borderRadius: BorderRadius.circular(16),
                       ),
                       child: Icon(

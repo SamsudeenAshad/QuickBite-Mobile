@@ -12,11 +12,15 @@ class ProfileScreen extends StatelessWidget {
     required this.onOpenOrders,
     this.user,
     this.onLogout,
+    this.isDarkMode = false,
+    this.onDarkModeChanged,
   });
 
   final VoidCallback onOpenOrders;
   final AppUser? user;
   final Future<void> Function()? onLogout;
+  final bool isDarkMode;
+  final ValueChanged<bool>? onDarkModeChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -72,6 +76,8 @@ class ProfileScreen extends StatelessWidget {
                         onOpenPromotions: () => _openPromotions(context),
                         onShowAbout: () => _showAbout(context),
                         onLogout: () => _confirmLogout(context),
+                        isDarkMode: isDarkMode,
+                        onDarkModeChanged: onDarkModeChanged,
                       ),
                     ],
                   ),
@@ -396,12 +402,16 @@ class _ProfileOptions extends StatelessWidget {
     required this.onOpenPromotions,
     required this.onShowAbout,
     required this.onLogout,
+    required this.isDarkMode,
+    required this.onDarkModeChanged,
   });
 
   final VoidCallback onOpenOrders;
   final VoidCallback onOpenPromotions;
   final VoidCallback onShowAbout;
   final VoidCallback onLogout;
+  final bool isDarkMode;
+  final ValueChanged<bool>? onDarkModeChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -409,6 +419,30 @@ class _ProfileOptions extends StatelessWidget {
       clipBehavior: Clip.antiAlias,
       child: Column(
         children: <Widget>[
+          SwitchListTile(
+            secondary: Container(
+              width: 44,
+              height: 44,
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.secondaryContainer,
+                borderRadius: BorderRadius.circular(14),
+              ),
+              child: Icon(
+                isDarkMode ? Icons.dark_mode_rounded : Icons.light_mode_rounded,
+                color: AppColors.primary,
+              ),
+            ),
+            title: const Text(
+              'Dark mode',
+              style: TextStyle(fontWeight: FontWeight.w800),
+            ),
+            subtitle: Text(
+              isDarkMode ? 'Dark theme enabled' : 'Light theme enabled',
+            ),
+            value: isDarkMode,
+            onChanged: onDarkModeChanged,
+          ),
+          const Divider(),
           _ProfileOption(
             icon: Icons.receipt_long_outlined,
             title: 'My orders',
@@ -466,7 +500,8 @@ class _ProfileOption extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Color color = foregroundColor ?? AppColors.textPrimary;
+    final Color color =
+        foregroundColor ?? Theme.of(context).colorScheme.onSurface;
 
     return Semantics(
       button: true,
@@ -483,7 +518,7 @@ class _ProfileOption extends StatelessWidget {
             height: 44,
             decoration: BoxDecoration(
               color: foregroundColor == null
-                  ? AppColors.surfaceMuted
+                  ? Theme.of(context).colorScheme.secondaryContainer
                   : AppColors.danger.withValues(alpha: .08),
               borderRadius: BorderRadius.circular(14),
             ),

@@ -130,9 +130,13 @@ class _ChatScreenState extends State<ChatScreen> {
                 ),
                 Container(
                   padding: const EdgeInsets.fromLTRB(12, 10, 12, 12),
-                  decoration: const BoxDecoration(
-                    color: AppColors.surface,
-                    border: Border(top: BorderSide(color: AppColors.border)),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.surface,
+                    border: Border(
+                      top: BorderSide(
+                        color: Theme.of(context).colorScheme.outlineVariant,
+                      ),
+                    ),
                   ),
                   child: Row(
                     children: <Widget>[
@@ -216,7 +220,9 @@ class _MessageBubble extends StatelessWidget {
           Text(
             message.message,
             style: TextStyle(
-              color: message.fromAdmin ? AppColors.textPrimary : Colors.white,
+              color: message.fromAdmin
+                  ? Theme.of(context).colorScheme.onSurface
+                  : Colors.white,
               height: 1.4,
             ),
           ),

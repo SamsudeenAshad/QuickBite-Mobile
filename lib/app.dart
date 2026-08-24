@@ -7,6 +7,7 @@ import 'providers/chat_provider.dart';
 import 'providers/navigation_provider.dart';
 import 'providers/order_provider.dart';
 import 'providers/product_provider.dart';
+import 'providers/theme_provider.dart';
 import 'repositories/cart_repository.dart';
 import 'repositories/auth_repository.dart';
 import 'repositories/chat_repository.dart';
@@ -32,6 +33,7 @@ class QuickBiteApp extends StatelessWidget {
           create: (_) => AuthProvider(AuthRepository(database))..initialize(),
         ),
         ChangeNotifierProvider(create: (_) => NavigationProvider()),
+        ChangeNotifierProvider(create: (_) => ThemeProvider()),
         ChangeNotifierProvider(
           create: (_) => ChatProvider(ChatRepository(database)),
         ),
@@ -46,11 +48,15 @@ class QuickBiteApp extends StatelessWidget {
           create: (_) => OrderProvider(OrderRepository(database))..loadOrders(),
         ),
       ],
-      child: MaterialApp(
-        title: 'QuickBite Café',
-        debugShowCheckedModeBanner: false,
-        theme: AppTheme.light,
-        home: const _AppEntry(),
+      child: Consumer<ThemeProvider>(
+        builder: (context, themeProvider, _) => MaterialApp(
+          title: 'QuickBite Café',
+          debugShowCheckedModeBanner: false,
+          theme: AppTheme.light,
+          darkTheme: AppTheme.dark,
+          themeMode: themeProvider.themeMode,
+          home: const _AppEntry(),
+        ),
       ),
     );
   }

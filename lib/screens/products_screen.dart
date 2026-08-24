@@ -173,17 +173,19 @@ class _CategoryFilters extends StatelessWidget {
                       onSelected: (_) => provider.selectCategory(category),
                       showCheckmark: isSelected,
                       checkmarkColor: AppColors.primary,
-                      backgroundColor: AppColors.surface,
-                      selectedColor: AppColors.primaryContainer,
+                      backgroundColor: Theme.of(context).colorScheme.surface,
+                      selectedColor: Theme.of(context)
+                          .colorScheme
+                          .primaryContainer,
                       side: BorderSide(
                         color: isSelected
                             ? AppColors.primary
-                            : AppColors.border,
+                            : Theme.of(context).colorScheme.outlineVariant,
                       ),
                       labelStyle: TextStyle(
                         color: isSelected
                             ? AppColors.primary
-                            : AppColors.textPrimary,
+                            : Theme.of(context).colorScheme.onSurface,
                         fontWeight: FontWeight.w700,
                       ),
                       padding: const EdgeInsets.symmetric(
