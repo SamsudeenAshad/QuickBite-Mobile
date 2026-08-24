@@ -13,10 +13,18 @@ import '../widgets/state_message.dart';
 import 'product_details_screen.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key, required this.onBrowseMenu, this.onOpenCart});
+  const HomeScreen({
+    super.key,
+    required this.onBrowseMenu,
+    this.onOpenCart,
+    this.onOpenNotifications,
+    this.notificationCount = 0,
+  });
 
   final VoidCallback onBrowseMenu;
   final VoidCallback? onOpenCart;
+  final VoidCallback? onOpenNotifications;
+  final int notificationCount;
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -115,7 +123,11 @@ class _HomeScreenState extends State<HomeScreen> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            _HomeHeader(onOpenCart: widget.onOpenCart),
+                            _HomeHeader(
+                              onOpenCart: widget.onOpenCart,
+                              onOpenNotifications: widget.onOpenNotifications,
+                              notificationCount: widget.notificationCount,
+                            ),
                             const SizedBox(height: 24),
                             _SearchBar(
                               controller: _searchController,
@@ -163,9 +175,15 @@ class _HomeScreenState extends State<HomeScreen> {
 }
 
 class _HomeHeader extends StatelessWidget {
-  const _HomeHeader({required this.onOpenCart});
+  const _HomeHeader({
+    required this.onOpenCart,
+    required this.onOpenNotifications,
+    required this.notificationCount,
+  });
 
   final VoidCallback? onOpenCart;
+  final VoidCallback? onOpenNotifications;
+  final int notificationCount;
 
   @override
   Widget build(BuildContext context) {
@@ -193,6 +211,25 @@ class _HomeHeader extends StatelessWidget {
             ],
           ),
         ),
+        if (onOpenNotifications != null) ...<Widget>[
+          const SizedBox(width: 8),
+          SizedBox.square(
+            dimension: 48,
+            child: IconButton.filledTonal(
+              onPressed: onOpenNotifications,
+              tooltip: notificationCount == 0
+                  ? 'Open notifications'
+                  : 'Open $notificationCount notifications',
+              icon: Badge(
+                isLabelVisible: notificationCount > 0,
+                label: Text(
+                  notificationCount > 9 ? '9+' : '$notificationCount',
+                ),
+                child: const Icon(Icons.notifications_none_rounded),
+              ),
+            ),
+          ),
+        ],
         if (onOpenCart != null) ...<Widget>[
           const SizedBox(width: 12),
           SizedBox.square(

@@ -9,6 +9,7 @@ import 'checkout_screen.dart';
 import 'chat_screen.dart';
 import 'home_screen.dart';
 import 'orders_screen.dart';
+import 'notifications_screen.dart';
 import 'profile_screen.dart';
 import 'products_screen.dart';
 
@@ -37,6 +38,11 @@ class MainShell extends StatelessWidget {
             HomeScreen(
               onBrowseMenu: navigation.openMenu,
               onOpenCart: navigation.openCart,
+              onOpenNotifications: () => Navigator.of(context).push<void>(
+                MaterialPageRoute<void>(
+                  builder: (_) => NotificationsScreen(userId: user?.id ?? 0),
+                ),
+              ),
             ),
             const ProductsScreen(),
             CartScreen(
