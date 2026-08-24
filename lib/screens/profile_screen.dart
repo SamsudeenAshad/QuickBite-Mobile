@@ -2,13 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/order_provider.dart';
+import '../models/app_user.dart';
 import '../theme/app_theme.dart';
 import 'promotions_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({super.key, required this.onOpenOrders});
+  const ProfileScreen({
+    super.key,
+    required this.onOpenOrders,
+    this.user,
+    this.onLogout,
+  });
 
   final VoidCallback onOpenOrders;
+  final AppUser? user;
+  final Future<void> Function()? onLogout;
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +44,7 @@ class ProfileScreen extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: <Widget>[
-                      const _ProfileIdentityCard(),
+                      _ProfileIdentityCard(user: user),
                       const SizedBox(height: 16),
                       Consumer<OrderProvider>(
                         builder:
@@ -117,9 +125,7 @@ class ProfileScreen extends StatelessWidget {
         return AlertDialog(
           icon: const Icon(Icons.logout_rounded),
           title: const Text('Log out of QuickBite?'),
-          content: const Text(
-            'QuickBite uses a demo profile and does not have real authentication.',
-          ),
+          content: const Text('You will return to the sign-in screen.'),
           actions: <Widget>[
             TextButton(
               onPressed: () => Navigator.of(dialogContext).pop(false),
@@ -139,30 +145,30 @@ class ProfileScreen extends StatelessWidget {
       return;
     }
 
-    ScaffoldMessenger.of(context)
-      ..hideCurrentSnackBar()
-      ..showSnackBar(
-        const SnackBar(
-          content: Text(
-            'This demo has no account session, so there is nothing to sign out of.',
-          ),
-        ),
-      );
+    await onLogout?.call();
   }
 }
 
 class _ProfileIdentityCard extends StatelessWidget {
-  const _ProfileIdentityCard();
+  const _ProfileIdentityCard({this.user});
 
-  static const String _name = 'Samsudeen Ashad';
-  static const String _phone = '077 123 4567';
-  static const String _email = 'samsudeenashad@example.com';
+  final AppUser? user;
 
   @override
   Widget build(BuildContext context) {
+    final String name = user?.name ?? 'Samsudeen Ashad';
+    final String phone = user?.phone ?? '077 123 4567';
+    final String email = user?.email ?? 'samsudeenashad@example.com';
+    final String initials = name
+        .trim()
+        .split(RegExp(r'\s+'))
+        .take(2)
+        .map((part) => part[0].toUpperCase())
+        .join();
+
     return Semantics(
       container: true,
-      label: 'Profile for $_name. Phone $_phone. Email $_email.',
+      label: 'Profile for $name. Phone $phone. Email $email.',
       child: ExcludeSemantics(
         child: Card(
           child: Padding(
@@ -179,7 +185,7 @@ class _ProfileIdentityCard extends StatelessWidget {
                   ),
                   alignment: Alignment.center,
                   child: Text(
-                    'SA',
+                    initials,
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
                       color: AppColors.primary,
                       fontWeight: FontWeight.w900,
@@ -191,19 +197,13 @@ class _ProfileIdentityCard extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text(
-                        _name,
-                        style: Theme.of(context).textTheme.titleLarge,
-                      ),
+                      Text(name, style: Theme.of(context).textTheme.titleLarge),
                       const SizedBox(height: 10),
-                      const _ContactLine(
-                        icon: Icons.phone_outlined,
-                        value: _phone,
-                      ),
+                      _ContactLine(icon: Icons.phone_outlined, value: phone),
                       const SizedBox(height: 7),
-                      const _ContactLine(
+                      _ContactLine(
                         icon: Icons.mail_outline_rounded,
-                        value: _email,
+                        value: email,
                       ),
                     ],
                   ),
@@ -436,8 +436,8 @@ class _ProfileOptions extends StatelessWidget {
           _ProfileOption(
             icon: Icons.logout_rounded,
             title: 'Logout',
-            subtitle: 'Demo profile only',
-            semanticsLabel: 'Log out of the demo profile',
+            subtitle: 'Return to sign in',
+            semanticsLabel: 'Log out of QuickBite',
             foregroundColor: AppColors.danger,
             onTap: onLogout,
           ),

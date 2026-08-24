@@ -2,13 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'providers/cart_provider.dart';
+import 'providers/auth_provider.dart';
 import 'providers/navigation_provider.dart';
 import 'providers/order_provider.dart';
 import 'providers/product_provider.dart';
 import 'repositories/cart_repository.dart';
+import 'repositories/auth_repository.dart';
 import 'repositories/order_repository.dart';
 import 'repositories/product_repository.dart';
 import 'screens/main_shell.dart';
+import 'screens/auth_screen.dart';
 import 'screens/splash_screen.dart';
 import 'services/database_service.dart';
 import 'theme/app_theme.dart';
@@ -22,6 +25,9 @@ class QuickBiteApp extends StatelessWidget {
 
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider(
+          create: (_) => AuthProvider(AuthRepository(database))..initialize(),
+        ),
         ChangeNotifierProvider(create: (_) => NavigationProvider()),
         ChangeNotifierProvider(
           create: (_) =>
@@ -44,17 +50,30 @@ class QuickBiteApp extends StatelessWidget {
   }
 }
 
-class _AppEntry extends StatelessWidget {
+class _AppEntry extends StatefulWidget {
   const _AppEntry();
 
   @override
+  State<_AppEntry> createState() => _AppEntryState();
+}
+
+class _AppEntryState extends State<_AppEntry> {
+  bool _splashFinished = false;
+
+  @override
   Widget build(BuildContext context) {
-    return SplashScreen(
-      onFinished: () {
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute<void>(builder: (_) => const MainShell()),
-        );
-      },
-    );
+    if (!_splashFinished) {
+      return SplashScreen(
+        onFinished: () => setState(() => _splashFinished = true),
+      );
+    }
+
+    final AuthProvider auth = context.watch<AuthProvider>();
+    if (auth.isInitializing) {
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
+    }
+    if (!auth.isAuthenticated) return const AuthScreen();
+
+    return MainShell(user: auth.currentUser, onLogout: auth.logout);
   }
 }

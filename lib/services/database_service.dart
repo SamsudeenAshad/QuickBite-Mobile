@@ -28,6 +28,7 @@ class DatabaseService {
         await db.execute('PRAGMA foreign_keys = ON');
       },
       onCreate: _createDatabase,
+      onUpgrade: _upgradeDatabase,
     );
   }
 
@@ -66,6 +67,8 @@ class DatabaseService {
       )
     ''');
 
+    await _createAuthenticationTables(db);
+
     await db.execute(
       'CREATE INDEX idx_products_category ON products(category)',
     );
@@ -78,6 +81,36 @@ class DatabaseService {
       batch.insert('products', product.toMap());
     }
     await batch.commit(noResult: true);
+  }
+
+  Future<void> _upgradeDatabase(
+    Database db,
+    int oldVersion,
+    int newVersion,
+  ) async {
+    if (oldVersion < 2) {
+      await _createAuthenticationTables(db);
+    }
+  }
+
+  Future<void> _createAuthenticationTables(Database db) async {
+    await db.execute('''
+      CREATE TABLE users (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT NOT NULL,
+        phone TEXT NOT NULL,
+        email TEXT NOT NULL UNIQUE COLLATE NOCASE,
+        passwordHash TEXT NOT NULL,
+        createdAt TEXT NOT NULL
+      )
+    ''');
+    await db.execute('''
+      CREATE TABLE auth_session (
+        id INTEGER PRIMARY KEY CHECK(id = 1),
+        userId INTEGER NOT NULL,
+        FOREIGN KEY(userId) REFERENCES users(id) ON DELETE CASCADE
+      )
+    ''');
   }
 
   Future<void> close() async {

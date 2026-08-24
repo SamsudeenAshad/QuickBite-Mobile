@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/navigation_provider.dart';
+import '../models/app_user.dart';
 import '../widgets/custom_bottom_navigation.dart';
 import 'cart_screen.dart';
 import 'checkout_screen.dart';
@@ -11,7 +12,10 @@ import 'profile_screen.dart';
 import 'products_screen.dart';
 
 class MainShell extends StatelessWidget {
-  const MainShell({super.key});
+  const MainShell({super.key, this.user, this.onLogout});
+
+  final AppUser? user;
+  final Future<void> Function()? onLogout;
 
   @override
   Widget build(BuildContext context) {
@@ -47,6 +51,8 @@ class MainShell extends StatelessWidget {
             const OrdersScreen(),
             ProfileScreen(
               onOpenOrders: () => navigation.selectTab(AppTab.orders),
+              user: user,
+              onLogout: onLogout,
             ),
           ],
         ),

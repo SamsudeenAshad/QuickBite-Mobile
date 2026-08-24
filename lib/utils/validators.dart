@@ -1,4 +1,7 @@
 abstract final class AppValidators {
+  static final RegExp _emailPattern = RegExp(
+    r'^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$',
+  );
   static final RegExp _phoneCharacters = RegExp(r'^\+?[0-9()\s-]+$');
   static final RegExp _expiryPattern = RegExp(r'^(0[1-9]|1[0-2])/(\d{2})$');
   static final RegExp _cvvPattern = RegExp(r'^\d{3,4}$');
@@ -23,6 +26,20 @@ abstract final class AppValidators {
     if (digits.length < 9 || digits.length > 15) {
       return 'Enter a valid phone number with 9–15 digits.';
     }
+    return null;
+  }
+
+  static String? email(String? value) {
+    final String email = value?.trim() ?? '';
+    if (email.isEmpty) return 'Enter your email address.';
+    if (!_emailPattern.hasMatch(email)) return 'Enter a valid email address.';
+    return null;
+  }
+
+  static String? password(String? value) {
+    final String password = value ?? '';
+    if (password.isEmpty) return 'Enter your password.';
+    if (password.length < 8) return 'Use at least 8 characters.';
     return null;
   }
 
