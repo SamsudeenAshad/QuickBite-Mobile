@@ -216,6 +216,14 @@ class _HomeHeader extends StatelessWidget {
           SizedBox.square(
             dimension: 48,
             child: IconButton.filledTonal(
+              style: IconButton.styleFrom(
+                backgroundColor: Theme.of(context)
+                    .colorScheme
+                    .secondaryContainer,
+                foregroundColor: Theme.of(context)
+                    .colorScheme
+                    .onSecondaryContainer,
+              ),
               onPressed: onOpenNotifications,
               tooltip: notificationCount == 0
                   ? 'Open notifications'
@@ -235,6 +243,14 @@ class _HomeHeader extends StatelessWidget {
           SizedBox.square(
             dimension: 48,
             child: IconButton.filledTonal(
+              style: IconButton.styleFrom(
+                backgroundColor: Theme.of(context)
+                    .colorScheme
+                    .secondaryContainer,
+                foregroundColor: Theme.of(context)
+                    .colorScheme
+                    .onSecondaryContainer,
+              ),
               onPressed: onOpenCart,
               tooltip: itemCount == 0
                   ? 'Open empty cart'

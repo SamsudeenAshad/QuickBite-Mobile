@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../theme/app_theme.dart';
-
 class CategoryCard extends StatelessWidget {
   const CategoryCard({
     super.key,
@@ -19,7 +17,7 @@ class CategoryCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Color backgroundColor = selected
-        ? AppColors.primaryContainer
+        ? Theme.of(context).colorScheme.primaryContainer
         : Theme.of(context).colorScheme.surface;
     final Color foregroundColor = selected
         ? Theme.of(context).colorScheme.primary
@@ -66,13 +64,17 @@ class CategoryCard extends StatelessWidget {
                       height: 48,
                       decoration: BoxDecoration(
                         color: selected
-                            ? AppColors.primary
+                            ? Theme.of(context).colorScheme.primary
                             : Theme.of(context).colorScheme.secondaryContainer,
                         borderRadius: BorderRadius.circular(16),
                       ),
                       child: Icon(
                         icon,
-                        color: selected ? Colors.white : AppColors.secondary,
+                        color: selected
+                            ? Theme.of(context).colorScheme.onPrimary
+                            : Theme.of(context)
+                                  .colorScheme
+                                  .onSecondaryContainer,
                         size: 24,
                       ),
                     ),
