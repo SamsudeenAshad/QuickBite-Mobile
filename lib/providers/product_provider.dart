@@ -93,4 +93,19 @@ class ProductProvider extends ChangeNotifier {
     _searchQuery = '';
     notifyListeners();
   }
+
+  Future<void> addProduct(Product product) async {
+    await _productRepository.addProduct(product);
+    await loadProducts(force: true);
+  }
+
+  Future<void> updateProduct(Product product) async {
+    await _productRepository.updateProduct(product);
+    await loadProducts(force: true);
+  }
+
+  Future<void> deleteProduct(int id) async {
+    await _productRepository.deleteProduct(id);
+    await loadProducts(force: true);
+  }
 }

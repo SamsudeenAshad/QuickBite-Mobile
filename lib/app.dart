@@ -12,6 +12,7 @@ import 'repositories/order_repository.dart';
 import 'repositories/product_repository.dart';
 import 'screens/main_shell.dart';
 import 'screens/auth_screen.dart';
+import 'screens/admin_screen.dart';
 import 'screens/splash_screen.dart';
 import 'services/database_service.dart';
 import 'theme/app_theme.dart';
@@ -74,6 +75,9 @@ class _AppEntryState extends State<_AppEntry> {
     }
     if (!auth.isAuthenticated) return const AuthScreen();
 
+    if (auth.currentUser!.isAdmin) {
+      return AdminScreen(onLogout: auth.logout);
+    }
     return MainShell(user: auth.currentUser, onLogout: auth.logout);
   }
 }

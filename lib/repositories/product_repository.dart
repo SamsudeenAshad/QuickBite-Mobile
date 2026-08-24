@@ -38,4 +38,25 @@ class ProductRepository {
     );
     return rows.isEmpty ? null : Product.fromMap(rows.first);
   }
+
+  Future<int> addProduct(Product product) async {
+    final Database db = await _databaseService.database;
+    final Map<String, Object?> values = product.toMap()..remove('id');
+    return db.insert('products', values);
+  }
+
+  Future<void> updateProduct(Product product) async {
+    final Database db = await _databaseService.database;
+    await db.update(
+      'products',
+      product.toMap(),
+      where: 'id = ?',
+      whereArgs: <Object?>[product.id],
+    );
+  }
+
+  Future<void> deleteProduct(int id) async {
+    final Database db = await _databaseService.database;
+    await db.delete('products', where: 'id = ?', whereArgs: <Object?>[id]);
+  }
 }

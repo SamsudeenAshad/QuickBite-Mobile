@@ -3,7 +3,7 @@ class AppConstants {
 
   static const String appName = 'QuickBite Café';
   static const String databaseName = 'quickbite_cafe.db';
-  static const int databaseVersion = 2;
+  static const int databaseVersion = 3;
 
   static const double deliveryCharge = 200;
   static const double loyaltyPointSpend = 100;
@@ -39,6 +39,16 @@ class AppConstants {
   static const String orderStatusPreparing = 'Preparing';
   static const String orderStatusCompleted = 'Completed';
   static const String orderStatusCancelled = 'Cancelled';
+  static const String orderStatusConfirmed = 'Confirmed';
+  static const String orderStatusRejected = 'Rejected';
+  static const String orderStatusDelivered = 'Delivered';
+
+  static const List<String> adminOrderStatuses = <String>[
+    orderStatusPreparing,
+    orderStatusConfirmed,
+    orderStatusRejected,
+    orderStatusDelivered,
+  ];
 
   static const String promotionTitle = 'Weekend Special';
   static const String promotionDescription =

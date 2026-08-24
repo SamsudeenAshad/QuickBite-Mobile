@@ -13,8 +13,9 @@ class AuthRepository {
 
   Future<AppUser?> restoreSession() async {
     final Database db = await _databaseService.database;
+    await _ensureAdmin(db);
     final List<Map<String, Object?>> rows = await db.rawQuery('''
-      SELECT users.id, users.name, users.phone, users.email
+      SELECT users.id, users.name, users.phone, users.email, users.role
       FROM auth_session
       INNER JOIN users ON users.id = auth_session.userId
       WHERE auth_session.id = 1
@@ -30,6 +31,7 @@ class AuthRepository {
     required String password,
   }) async {
     final Database db = await _databaseService.database;
+    await _ensureAdmin(db);
     final String normalizedEmail = email.trim().toLowerCase();
 
     return db.transaction<AppUser>((Transaction transaction) async {
@@ -58,7 +60,7 @@ class AuthRepository {
     final String normalizedEmail = email.trim().toLowerCase();
     final List<Map<String, Object?>> rows = await db.query(
       'users',
-      columns: <String>['id', 'name', 'phone', 'email'],
+      columns: <String>['id', 'name', 'phone', 'email', 'role'],
       where: 'email = ? AND passwordHash = ?',
       whereArgs: <Object?>[
         normalizedEmail,
@@ -87,5 +89,16 @@ class AuthRepository {
 
   String _hashPassword(String email, String password) {
     return sha256.convert(utf8.encode('$email:$password')).toString();
+  }
+
+  Future<void> _ensureAdmin(Database db) async {
+    await db.insert('users', <String, Object?>{
+      'name': 'QuickBite Administrator',
+      'phone': '000000000',
+      'email': 'admin',
+      'passwordHash': _hashPassword('admin', 'admin123'),
+      'role': 'admin',
+      'createdAt': DateTime.now().toIso8601String(),
+    }, conflictAlgorithm: ConflictAlgorithm.ignore);
   }
 }

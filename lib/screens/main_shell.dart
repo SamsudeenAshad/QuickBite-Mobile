@@ -6,6 +6,7 @@ import '../models/app_user.dart';
 import '../widgets/custom_bottom_navigation.dart';
 import 'cart_screen.dart';
 import 'checkout_screen.dart';
+import 'chat_screen.dart';
 import 'home_screen.dart';
 import 'orders_screen.dart';
 import 'profile_screen.dart';
@@ -59,6 +60,14 @@ class MainShell extends StatelessWidget {
         bottomNavigationBar: CustomBottomNavigation(
           currentIndex: selectedIndex,
           onDestinationSelected: navigation.selectTab,
+        ),
+        floatingActionButton: FloatingActionButton(
+          heroTag: 'cafe-chat',
+          tooltip: 'Chat with café',
+          onPressed: () => Navigator.of(context).push<void>(
+            MaterialPageRoute<void>(builder: (_) => const ChatScreen()),
+          ),
+          child: const Icon(Icons.chat_bubble_outline_rounded),
         ),
       ),
     );

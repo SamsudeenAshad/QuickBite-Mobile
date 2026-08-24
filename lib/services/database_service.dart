@@ -90,6 +90,10 @@ class DatabaseService {
   ) async {
     if (oldVersion < 2) {
       await _createAuthenticationTables(db);
+    } else if (oldVersion < 3) {
+      await db.execute(
+        "ALTER TABLE users ADD COLUMN role TEXT NOT NULL DEFAULT 'customer'",
+      );
     }
   }
 
@@ -101,6 +105,7 @@ class DatabaseService {
         phone TEXT NOT NULL,
         email TEXT NOT NULL UNIQUE COLLATE NOCASE,
         passwordHash TEXT NOT NULL,
+        role TEXT NOT NULL DEFAULT 'customer',
         createdAt TEXT NOT NULL
       )
     ''');
