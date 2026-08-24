@@ -150,26 +150,53 @@ class _CategoryFilters extends StatelessWidget {
     return Semantics(
       container: true,
       label: 'Filter menu by category',
-      child: Wrap(
-        spacing: 8,
-        runSpacing: 8,
-        children: AppConstants.menuCategories
-            .map((category) {
-              final bool isSelected = provider.selectedCategory == category;
-              return Semantics(
-                selected: isSelected,
-                button: true,
-                child: ChoiceChip(
-                  selected: isSelected,
-                  onSelected: (_) => provider.selectCategory(category),
-                  avatar: isSelected
-                      ? const Icon(Icons.check_rounded, size: 18)
-                      : null,
-                  label: Text(category),
-                ),
-              );
-            })
-            .toList(growable: false),
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          children: AppConstants.menuCategories.indexed
+              .map((entry) {
+                final int index = entry.$1;
+                final String category = entry.$2;
+                final bool isSelected = provider.selectedCategory == category;
+
+                return Padding(
+                  padding: EdgeInsets.only(
+                    right: index == AppConstants.menuCategories.length - 1
+                        ? 0
+                        : 8,
+                  ),
+                  child: Semantics(
+                    selected: isSelected,
+                    button: true,
+                    child: ChoiceChip(
+                      selected: isSelected,
+                      onSelected: (_) => provider.selectCategory(category),
+                      showCheckmark: isSelected,
+                      checkmarkColor: AppColors.primary,
+                      backgroundColor: AppColors.surface,
+                      selectedColor: AppColors.primaryContainer,
+                      side: BorderSide(
+                        color: isSelected
+                            ? AppColors.primary
+                            : AppColors.border,
+                      ),
+                      labelStyle: TextStyle(
+                        color: isSelected
+                            ? AppColors.primary
+                            : AppColors.textPrimary,
+                        fontWeight: FontWeight.w700,
+                      ),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 14,
+                        vertical: 12,
+                      ),
+                      label: Text(category),
+                    ),
+                  ),
+                );
+              })
+              .toList(growable: false),
+        ),
       ),
     );
   }
