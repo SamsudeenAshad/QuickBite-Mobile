@@ -65,7 +65,9 @@ class MainShell extends StatelessWidget {
           heroTag: 'cafe-chat',
           tooltip: 'Chat with café',
           onPressed: () => Navigator.of(context).push<void>(
-            MaterialPageRoute<void>(builder: (_) => const ChatScreen()),
+            MaterialPageRoute<void>(
+              builder: (_) => ChatScreen(userId: user?.id ?? 0),
+            ),
           ),
           child: const Icon(Icons.chat_bubble_outline_rounded),
         ),

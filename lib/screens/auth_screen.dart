@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../providers/auth_provider.dart';
 import '../theme/app_theme.dart';
 import '../utils/validators.dart';
+import '../utils/keyboard_helper.dart';
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({super.key});
@@ -116,6 +117,7 @@ class _AuthScreenState extends State<AuthScreen> {
                             if (_isSignUp) ...<Widget>[
                               TextFormField(
                                 controller: _name,
+                                onTap: showSoftKeyboard,
                                 textInputAction: TextInputAction.next,
                                 autofillHints: const <String>[
                                   AutofillHints.name,
@@ -131,6 +133,7 @@ class _AuthScreenState extends State<AuthScreen> {
                               const SizedBox(height: 14),
                               TextFormField(
                                 controller: _phone,
+                                onTap: showSoftKeyboard,
                                 keyboardType: TextInputType.phone,
                                 textInputAction: TextInputAction.next,
                                 autofillHints: const <String>[
@@ -146,6 +149,7 @@ class _AuthScreenState extends State<AuthScreen> {
                             ],
                             TextFormField(
                               controller: _email,
+                              onTap: showSoftKeyboard,
                               keyboardType: TextInputType.emailAddress,
                               textInputAction: TextInputAction.next,
                               autofillHints: const <String>[
@@ -165,6 +169,7 @@ class _AuthScreenState extends State<AuthScreen> {
                             const SizedBox(height: 14),
                             TextFormField(
                               controller: _password,
+                              onTap: showSoftKeyboard,
                               obscureText: _obscurePassword,
                               textInputAction: TextInputAction.done,
                               autofillHints: <String>[

@@ -68,6 +68,7 @@ class DatabaseService {
     ''');
 
     await _createAuthenticationTables(db);
+    await _createChatTable(db);
 
     await db.execute(
       'CREATE INDEX idx_products_category ON products(category)',
@@ -95,6 +96,9 @@ class DatabaseService {
         "ALTER TABLE users ADD COLUMN role TEXT NOT NULL DEFAULT 'customer'",
       );
     }
+    if (oldVersion < 4) {
+      await _createChatTable(db);
+    }
   }
 
   Future<void> _createAuthenticationTables(Database db) async {
@@ -116,6 +120,22 @@ class DatabaseService {
         FOREIGN KEY(userId) REFERENCES users(id) ON DELETE CASCADE
       )
     ''');
+  }
+
+  Future<void> _createChatTable(Database db) async {
+    await db.execute('''
+      CREATE TABLE chat_messages (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        userId INTEGER NOT NULL,
+        senderRole TEXT NOT NULL,
+        message TEXT NOT NULL,
+        createdAt TEXT NOT NULL,
+        FOREIGN KEY(userId) REFERENCES users(id) ON DELETE CASCADE
+      )
+    ''');
+    await db.execute(
+      'CREATE INDEX idx_chat_user_created ON chat_messages(userId, createdAt)',
+    );
   }
 
   Future<void> close() async {

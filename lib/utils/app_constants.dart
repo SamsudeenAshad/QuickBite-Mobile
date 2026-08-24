@@ -3,7 +3,7 @@ class AppConstants {
 
   static const String appName = 'QuickBite Café';
   static const String databaseName = 'quickbite_cafe.db';
-  static const int databaseVersion = 3;
+  static const int databaseVersion = 4;
 
   static const double deliveryCharge = 200;
   static const double loyaltyPointSpend = 100;

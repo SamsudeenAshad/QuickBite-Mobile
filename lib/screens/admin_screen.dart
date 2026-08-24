@@ -3,11 +3,14 @@ import 'package:provider/provider.dart';
 
 import '../models/order.dart';
 import '../models/product.dart';
+import '../models/chat_message.dart';
+import '../providers/chat_provider.dart';
 import '../providers/order_provider.dart';
 import '../providers/product_provider.dart';
 import '../theme/app_theme.dart';
 import '../utils/app_constants.dart';
 import '../utils/currency_formatter.dart';
+import '../utils/keyboard_helper.dart';
 import '../widgets/product_image.dart';
 
 class AdminScreen extends StatefulWidget {
@@ -35,7 +38,11 @@ class _AdminScreenState extends State<AdminScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(_selectedIndex == 0 ? 'Manage products' : 'Manage orders'),
+        title: Text(switch (_selectedIndex) {
+          0 => 'Manage products',
+          1 => 'Manage orders',
+          _ => 'Customer chat',
+        }),
         actions: <Widget>[
           IconButton(
             tooltip: 'Log out',
@@ -45,7 +52,11 @@ class _AdminScreenState extends State<AdminScreen> {
           const SizedBox(width: 8),
         ],
       ),
-      body: _selectedIndex == 0 ? const _AdminProducts() : const _AdminOrders(),
+      body: switch (_selectedIndex) {
+        0 => const _AdminProducts(),
+        1 => const _AdminOrders(),
+        _ => const _AdminChat(),
+      },
       floatingActionButton: _selectedIndex == 0
           ? FloatingActionButton.extended(
               onPressed: () => _showProductForm(context),
@@ -68,8 +79,171 @@ class _AdminScreenState extends State<AdminScreen> {
             selectedIcon: Icon(Icons.receipt_long_rounded),
             label: 'Orders',
           ),
+          NavigationDestination(
+            icon: Icon(Icons.chat_bubble_outline_rounded),
+            selectedIcon: Icon(Icons.chat_bubble_rounded),
+            label: 'Chat',
+          ),
         ],
       ),
+    );
+  }
+}
+
+class _AdminChat extends StatefulWidget {
+  const _AdminChat();
+
+  @override
+  State<_AdminChat> createState() => _AdminChatState();
+}
+
+class _AdminChatState extends State<_AdminChat> {
+  final TextEditingController _replyController = TextEditingController();
+  int? _selectedUserId;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<ChatProvider>().loadForAdmin();
+    });
+  }
+
+  @override
+  void dispose() {
+    _replyController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _reply() async {
+    final int? userId = _selectedUserId;
+    final String reply = _replyController.text.trim();
+    if (userId == null || reply.isEmpty) return;
+    _replyController.clear();
+    await context.read<ChatProvider>().sendAdminReply(userId, reply);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<ChatProvider>(
+      builder: (context, chat, _) {
+        final Map<int, String> customers = <int, String>{
+          for (final ChatMessage message in chat.messages)
+            message.userId: message.customerName,
+        };
+        if (_selectedUserId == null && customers.isNotEmpty) {
+          _selectedUserId = customers.keys.first;
+        }
+        final List<ChatMessage> conversation = chat.messages
+            .where((message) => message.userId == _selectedUserId)
+            .toList(growable: false);
+
+        return Column(
+          children: <Widget>[
+            if (chat.isLoading) const LinearProgressIndicator(minHeight: 2),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 12, 16, 8),
+              child: Row(
+                children: <Widget>[
+                  Expanded(
+                    child: DropdownButtonFormField<int>(
+                      initialValue: customers.containsKey(_selectedUserId)
+                          ? _selectedUserId
+                          : null,
+                      decoration: const InputDecoration(
+                        labelText: 'Customer conversation',
+                        prefixIcon: Icon(Icons.person_outline_rounded),
+                      ),
+                      items: customers.entries
+                          .map(
+                            (entry) => DropdownMenuItem<int>(
+                              value: entry.key,
+                              child: Text(entry.value),
+                            ),
+                          )
+                          .toList(growable: false),
+                      onChanged: (value) =>
+                          setState(() => _selectedUserId = value),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  IconButton.filledTonal(
+                    tooltip: 'Refresh customer messages',
+                    onPressed: chat.loadForAdmin,
+                    icon: const Icon(Icons.refresh_rounded),
+                  ),
+                ],
+              ),
+            ),
+            Expanded(
+              child: conversation.isEmpty
+                  ? const Center(child: Text('No customer messages waiting.'))
+                  : ListView.separated(
+                      padding: const EdgeInsets.all(16),
+                      itemCount: conversation.length,
+                      separatorBuilder: (_, _) => const SizedBox(height: 10),
+                      itemBuilder: (context, index) {
+                        final ChatMessage message = conversation[index];
+                        return Align(
+                          alignment: message.fromAdmin
+                              ? Alignment.centerRight
+                              : Alignment.centerLeft,
+                          child: Container(
+                            constraints: const BoxConstraints(maxWidth: 330),
+                            padding: const EdgeInsets.all(13),
+                            decoration: BoxDecoration(
+                              color: message.fromAdmin
+                                  ? AppColors.primary
+                                  : AppColors.surfaceMuted,
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            child: Text(
+                              message.message,
+                              style: TextStyle(
+                                color: message.fromAdmin
+                                    ? Colors.white
+                                    : AppColors.textPrimary,
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+            ),
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: const BoxDecoration(
+                color: AppColors.surface,
+                border: Border(top: BorderSide(color: AppColors.border)),
+              ),
+              child: Row(
+                children: <Widget>[
+                  Expanded(
+                    child: TextField(
+                      controller: _replyController,
+                      onTap: showSoftKeyboard,
+                      enabled: _selectedUserId != null,
+                      textInputAction: TextInputAction.send,
+                      onSubmitted: (_) => _reply(),
+                      decoration: const InputDecoration(
+                        labelText: 'Admin reply',
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  IconButton.filled(
+                    tooltip: 'Send admin reply',
+                    onPressed: _selectedUserId == null || chat.isSending
+                        ? null
+                        : _reply,
+                    icon: const Icon(Icons.send_rounded),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }
@@ -400,6 +574,7 @@ class _AdminField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextFormField(
       controller: controller,
+      onTap: showSoftKeyboard,
       maxLines: maxLines,
       keyboardType: number
           ? const TextInputType.numberWithOptions(decimal: true)
