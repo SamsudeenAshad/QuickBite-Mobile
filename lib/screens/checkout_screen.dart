@@ -269,7 +269,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                     textInputAction: TextInputAction.next,
                                     decoration: const InputDecoration(
                                       labelText: 'Customer name',
-                                      hintText: 'e.g. Samsudeen Ashad',
+                                      hintText: 'Customer name',
                                       prefixIcon: Icon(
                                         Icons.person_outline_rounded,
                                         semanticLabel: 'Customer name',

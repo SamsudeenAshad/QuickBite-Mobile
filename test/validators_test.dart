@@ -10,7 +10,7 @@ void main() {
     });
 
     test('accepts a non-empty trimmed name', () {
-      expect(AppValidators.customerName('  Samsudeen Ashad  '), isNull);
+      expect(AppValidators.customerName('  Sample Customer  '), isNull);
     });
   });
 
@@ -48,7 +48,7 @@ void main() {
     test('requires a non-empty cardholder name', () {
       expect(AppValidators.cardholderName(null), isNotNull);
       expect(AppValidators.cardholderName('   '), isNotNull);
-      expect(AppValidators.cardholderName('Samsudeen Ashad'), isNull);
+      expect(AppValidators.cardholderName('Sample Customer'), isNull);
     });
   });
 

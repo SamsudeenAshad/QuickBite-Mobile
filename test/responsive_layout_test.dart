@@ -40,7 +40,7 @@ void main() {
     _setTestScreen(tester, const Size(320, 568));
     final OrderModel order = OrderModel(
       id: 25,
-      customerName: 'Samsudeen Ashad',
+      customerName: 'Sample Customer',
       phone: '0771234567',
       address: 'Colombo',
       total: 2450,

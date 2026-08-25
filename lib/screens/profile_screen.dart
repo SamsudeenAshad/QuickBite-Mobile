@@ -152,14 +152,17 @@ class _ProfileIdentityCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String name = user?.name ?? 'Samsudeen Ashad';
+    final String name = user?.name ?? '';
     final String phone = user?.phone ?? '077 123 4567';
-    final String email = user?.email ?? 'samsudeenashad@example.com';
-    final String initials = name
+    final String email = user?.email ?? '';
+    final List<String> nameParts = name
         .trim()
         .split(RegExp(r'\s+'))
+        .where((String part) => part.isNotEmpty)
         .take(2)
-        .map((part) => part[0].toUpperCase())
+        .toList(growable: false);
+    final String initials = nameParts
+        .map((String part) => part[0].toUpperCase())
         .join();
 
     return Semantics(

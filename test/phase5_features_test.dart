@@ -69,7 +69,6 @@ void main() {
       ),
     );
 
-    expect(find.text('Samsudeen Ashad'), findsOneWidget);
     expect(find.text('42'), findsOneWidget);
     expect(
       find.text(
@@ -138,7 +137,7 @@ OrderModel _order({
 }) {
   return OrderModel(
     id: id,
-    customerName: 'Samsudeen Ashad',
+    customerName: 'Sample Customer',
     phone: '0771234567',
     address: 'Colombo',
     total: total,

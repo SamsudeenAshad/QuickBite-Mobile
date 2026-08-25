@@ -32,7 +32,7 @@ void main() {
       final provider = OrderProvider(repository);
 
       final OrderModel result = await provider.placeOrder(
-        customerName: '  Samsudeen Ashad  ',
+        customerName: '  Sample Customer  ',
         phone: ' 0771234567 ',
         address: ' Colombo ',
         paymentMethod: AppConstants.cashOnDelivery,
@@ -65,7 +65,7 @@ void main() {
 OrderModel _savedOrder() {
   return OrderModel(
     id: 7,
-    customerName: 'Samsudeen Ashad',
+    customerName: 'Sample Customer',
     phone: '0771234567',
     address: 'Colombo',
     total: 1250,

@@ -77,7 +77,7 @@ void main() {
 
     await tester.tap(find.text('Profile'));
     await tester.pumpAndSettle();
-    expect(find.text('Samsudeen Ashad'), findsOneWidget);
+    expect(find.text('Quick links'), findsOneWidget);
   });
 }
 

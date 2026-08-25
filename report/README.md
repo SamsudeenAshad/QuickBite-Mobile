@@ -20,7 +20,7 @@ Open the DOCX in Microsoft Word and complete every highlighted or bracketed fiel
 6. Signature and submission date
 7. Public/evaluator-accessible Plymouth OneDrive source-code link (mandatory in the supplied guideline)
 
-The name “Samsudeen Ashad” was inferred from the repository’s complete Git history and must be verified. The report transparently declares OpenAI Codex as a writing/formatting aid. In Word, update the Table of Contents field if page numbers are not populated automatically.
+Personal-name fields were intentionally left blank. The report transparently declares OpenAI Codex as a writing/formatting aid. In Word, update the Table of Contents field if page numbers are not populated automatically.
 
 ## Verification recorded on 25 August 2026
 
@@ -29,4 +29,3 @@ The name “Samsudeen Ashad” was inferred from the repository’s complete Git
 - `flutter analyze`: no issues found
 - `flutter test`: all 42 tests passed
 - DOCX archive integrity: passed
-

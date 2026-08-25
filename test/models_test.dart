@@ -32,7 +32,7 @@ void main() {
   test('OrderModel formats a friendly QuickBite order number', () {
     final order = OrderModel(
       id: 25,
-      customerName: 'Samsudeen Ashad',
+      customerName: 'Sample Customer',
       phone: '0771234567',
       address: 'Colombo',
       total: 2150,

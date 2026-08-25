@@ -405,7 +405,7 @@ def build_report():
     document = Document()
     configure_document(document)
     document.core_properties.title = "Villi’s Cafe Android Mobile Application – Final Report"
-    document.core_properties.author = "Samsudeen Ashad (verify before submission)"
+    document.core_properties.author = ""
     document.core_properties.subject = "PUSL2023 Mobile Application Development"
     document.core_properties.keywords = "Flutter, Dart, SQLite, Provider, Material 3, mobile application"
 
@@ -418,7 +418,7 @@ def build_report():
     run.font.color.rgb = RGBColor.from_string(BROWN)
     document.add_paragraph()
     cover_rows = [
-        ("Name", "Samsudeen Ashad — VERIFY BEFORE SUBMISSION"),
+        ("Name", ""),
         ("Student Reference Number", "[ENTER STUDENT REFERENCE NUMBER]"),
         ("Module Code", "PUSL2023"),
         ("Module Name", "Mobile Application Development"),
@@ -441,7 +441,7 @@ def build_report():
     document.add_paragraph()
     p = document.add_paragraph()
     p.add_run("Group work declaration and participants\n").bold = True
-    p.add_run("Repository evidence identified Samsudeen Ashad as the contributor. Add any other formally associated participants here before submission: [ENTER NAMES OR STATE ‘UNDERTAKEN ALONE’].")
+    p.add_run("[ENTER PARTICIPANT NAMES OR STATE ‘UNDERTAKEN ALONE’].")
     p = document.add_paragraph()
     p.add_run("Assessment offence declaration\n").bold = True
     p.add_run("The submitter confirms that the Plymouth University regulations relating to assessment offences have been read and understood, and that this submission represents the group’s independent work.")
@@ -480,7 +480,7 @@ def build_report():
     p = document.add_paragraph()
     p.alignment = WD_ALIGN_PARAGRAPH.CENTER
     p.paragraph_format.space_before = Pt(34)
-    p.add_run("Prepared by: Samsudeen Ashad (verify)\n")
+    p.add_run("Prepared by: ______________________________\n")
     p.add_run("Student Reference Number: [ENTER NUMBER]\n")
     p.add_run("Submission date: [ENTER DATE]")
     p = document.add_paragraph()
@@ -732,7 +732,7 @@ def build_report():
     document.add_heading("Chapter 05 – Contribution and Source Control", level=1)
     document.add_heading("5.1 Individual contribution", level=2)
     document.add_paragraph(
-        "The repository contained 23 commits attributed to Samsudeen Ashad through two equivalent Git identities. The history covered the project scaffold, core architecture, product discovery, cart, checkout, confirmation, promotions, profile, loyalty, authentication, administrator controls, chat, notifications, dark mode, Android configuration, testing, resilience, documentation, and the final Villi’s Cafe rebrand. On the evidence available in the repository, this represented the individual contribution to the submitted product."
+        "The repository contained 23 commits attributed to one contributor through two equivalent Git identities. The history covered the project scaffold, core architecture, product discovery, cart, checkout, confirmation, promotions, profile, loyalty, authentication, administrator controls, chat, notifications, dark mode, Android configuration, testing, resilience, documentation, and the final Villi’s Cafe rebrand. The contributor name was intentionally left blank and must be completed accurately before submission."
     )
     add_placeholder_box(
         document,
@@ -740,7 +740,7 @@ def build_report():
         "If this was group work, add one short, accurate paragraph for every additional member and adjust the cover declaration. Do not submit the single-contributor statement unless it is correct.",
     )
     contribution_rows = [
-        ("Samsudeen Ashad", "23", "Application architecture, UI, SQLite persistence, customer/admin features, automated tests, Android configuration, documentation, and rebranding."),
+        ("", "23", "Application architecture, UI, SQLite persistence, customer/admin features, automated tests, Android configuration, documentation, and rebranding."),
     ]
     add_table(document, ["Contributor", "Commits", "Repository-evidenced work"], contribution_rows, widths=[1.5, 0.7, 4.6], font_size=8.5)
     add_caption(document, "Table 5.1 Git contribution summary")
@@ -748,7 +748,7 @@ def build_report():
     document.add_heading("5.2 GitHub repository and commit history", level=2)
     p = document.add_paragraph()
     p.add_run("GitHub repository: ").bold = True
-    add_hyperlink(p, "https://github.com/SamsudeenAshad/QuickBite-Cafe", "https://github.com/SamsudeenAshad/QuickBite-Cafe")
+    p.add_run("[PASTE GITHUB REPOSITORY LINK]")
     document.add_paragraph(
         "The full commit history is reproduced in Appendix A. The sequence showed an incremental implementation rather than a single bulk upload, with feature and corrective commits describing the behaviour introduced at each stage."
     )
@@ -768,14 +768,17 @@ def build_report():
         ("Remi Rousselet and contributors", "2025", "provider 6.1.5+1", "https://pub.dev/packages/provider"),
         ("Tekartik", "2026", "sqflite: SQLite plugin for Flutter", "https://pub.dev/packages/sqflite"),
         ("SQLite Project", "2026", "Transaction", "https://www.sqlite.org/lang_transaction.html"),
-        ("Villi’s Cafe project repository", "2026", "QuickBite-Cafe source code and README", "https://github.com/SamsudeenAshad/QuickBite-Cafe"),
+        ("Villi’s Cafe project repository", "2026", "QuickBite-Cafe source code and README", "[PASTE GITHUB REPOSITORY LINK]"),
     ]
     for author, year, title, url in references:
         p = document.add_paragraph()
         p.paragraph_format.left_indent = Cm(0.7)
         p.paragraph_format.first_line_indent = Cm(-0.7)
         p.add_run(f"{author} ({year}) {title}. Available at: ")
-        add_hyperlink(p, url, url)
+        if url.startswith("["):
+            p.add_run(url)
+        else:
+            add_hyperlink(p, url, url)
         p.add_run(" (Accessed: 25 August 2026).")
 
     document.add_page_break()
